@@ -15,7 +15,7 @@ cur = conn.cursor()
 def select_query(table, column):
     query = 'SELECT ' + column + 'from ' + table
     cur.execute(query)
-    results = cur.fetchall
+    results = cur.fetchall()
     return results
 
 #Fetches a row in the chosen table based on a specific column and id
@@ -24,5 +24,5 @@ def select_query(table, column):
 def select_data(table, column, id):
     query = 'SELECT * from ' + table + " WHERE " + column + " = " + id
     cur.execute(query) 
-    result = cur.fetchall
+    result = cur.fetchall()
     return result

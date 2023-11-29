@@ -25,4 +25,4 @@ def user_profile(username):
     return
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host='localhost')
