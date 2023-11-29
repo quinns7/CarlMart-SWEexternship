@@ -26,3 +26,12 @@ def select_data(table, column, id):
     cur.execute(query) 
     result = cur.fetchall()
     return result
+
+#Insert a tuple of data into a SQL table
+#Format:
+#-Users: (username, listings, rating)
+#-Listings: (listing, title, description, price, contact, image)
+def insert_row(table, data):
+    query = 'INSERT INTO ' + table + ' VALUES ' + data
+    cur.execute(query)
+    return
