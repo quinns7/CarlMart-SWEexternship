@@ -18,12 +18,13 @@ def connect():
                             port=DB_PORT)
     except(Exception, psycopg2.Error) as error:
                 print("Error connecting to PostgreSQL", error) 
-    return
+    cur = conn.cursor()
+    return cur
 
 #grabs a specific column list from the specifed table.  
 #Returns a list of tuples
 def select_query(table, column):
-    cur = conn.cursor()
+    cur = connect()
     query = 'SELECT ' + column + 'from ' + table
     cur.execute(query)
     results = cur.fetchall()
@@ -34,7 +35,7 @@ def select_query(table, column):
 #Useful if looking for data related to a specifc user, item, etc.
 #Returns a list of tuples
 def select_data(table, column, id):
-    cur = conn.cursor()
+    cur = connect()
     query = 'SELECT * from ' + table + " WHERE " + column + " = " + id
     cur.execute(query) 
     result = cur.fetchall()
@@ -46,7 +47,7 @@ def select_data(table, column, id):
 #-Users: (username, listings, rating)
 #-Listings: (listing, title, description, price, contact, image)
 def insert_row(table, data):
-    cur = conn.cursor()
+    cur = connect()
     query = 'INSERT INTO ' + table + ' VALUES ' + data
     cur.execute(query)
     cur.close()
