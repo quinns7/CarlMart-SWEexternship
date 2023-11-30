@@ -1,7 +1,7 @@
 import psycopg2
 
 
-DB_NAME = "carlsmart"
+DB_NAME = "carlmart"
 DB_USER = "postgres"
 DB_PASS = "carlsarecool"
 DB_HOST = "db"
@@ -16,11 +16,12 @@ def connect():
                             password=DB_PASS,
                             host=DB_HOST,
                             port=DB_PORT)
+        cur = conn.cursor()
+        return cur
     except(Exception, psycopg2.Error) as error:
-                print("Error connecting to PostgreSQL", error) 
-    cur = conn.cursor()
-    return cur
-
+        print("Error connecting to PostgreSQL", error) 
+        return 
+    
 #grabs a specific column list from the specifed table.  
 #Returns a list of tuples
 def select_query(table, column):
@@ -52,6 +53,14 @@ def insert_row(table, data):
     cur.execute(query)
     cur.close()
     return
+
+def select_all_listings():
+    cur = connect()
+    query = 'SELECT * from listings'
+    cur.execute(query) 
+    result = cur.fetchall()
+    cur.close()
+    return result
 
 if __name__ == "__main__":
     connect()
