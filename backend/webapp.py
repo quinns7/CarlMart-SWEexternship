@@ -29,7 +29,7 @@ def create_item_listing():
     return
 
 @app.route('/new_user', methods=["POST"])
-def create_item_listing():
+def create_user():
     data = request.get_json()
     data_list = []
     for key in data:
