@@ -1,9 +1,39 @@
+# services:
+#   db:
+#     image: postgres
+#     expose: 
+#       - "5432"
+#     environment:
+#       - POSTGRES_PASSWORD=carlsarecool
+#       - POSTGRES_DB=carlmart
+#       - PGDATA=/var/lib/postgresql/data/pgdata
+#     restart: on-failure
+
+#     volumes:
+#       - ./db:/docker-entrypoint-initdb.d/
+#       - ./pgdata:/var/lib/postgresql/data
+
+
+#   app:
+#     build: ./backend
+#     ports: 
+#       - "9000:5555"
+  
+#   web:
+#     build: ./frontend
+#     ports:
+#       - "3000:3000"
+#     depends_on:
+#       - app
+
+
 services:
   db:
     image: postgres
     expose: 
       - "5432"
     environment:
+      - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=carlsarecool
       - POSTGRES_DB=carlmart
       - PGDATA=/var/lib/postgresql/data/pgdata
@@ -16,8 +46,10 @@ services:
 
   app:
     build: ./backend
-    ports: 
-      - "9000:5555"
+    # ports: 
+    #   - "9000:5555"
+    depends_on:
+      - db
   
   web:
     build: ./frontend

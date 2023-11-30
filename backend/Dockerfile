@@ -11,4 +11,4 @@ RUN pip install psycopg2
 
 EXPOSE 5555
 
-CMD ["python3", "webapp.py", "functionality.py"]
+CMD ["python3", "-u", "webapp.py", "functionality.py"]
