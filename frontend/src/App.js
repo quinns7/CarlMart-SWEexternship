@@ -2,10 +2,10 @@ import React, {useState, useEffect} from 'react'
 
 function App() {
 
-  const [data, setData] = useState ([{}])
+  const [data, setData] = useState([{}])
 
   useEffect(() => {
-    fetch("/names").then(
+    fetch("/home").then(
       res => res.json()
     ). then(
       data => {
@@ -18,11 +18,11 @@ function App() {
 
   return (
     <div>
-      {(typeof data.names === 'undefined') ? (
+      {(typeof data.home === 'undefined') ? (
         <p>Loading...</p>
       ): (
-        data.names.map((name,i) => (
-          <p key={i}>{name}</p>
+        data.home.map((unit,i) => (
+          <p key={i}>{unit}</p>
         ))
       )}
     </div>
