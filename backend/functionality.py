@@ -16,6 +16,7 @@ def connect():
                             password=DB_PASS,
                             host=DB_HOST,
                             port=DB_PORT)
+        print("this worked")
     except(Exception, psycopg2.Error) as error:
                 print("Error connecting to PostgreSQL", error) 
     cur = conn.cursor()
