@@ -1,11 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Home.css';
-import cactusImage from '../dummy/cactus.jpg';
-import calcImage from '../dummy/calc.jpg';
-import lampImage from '../dummy/lamp.webp';
-import switchImage from '../dummy/nintendo.jpg'
-import beanImage from '../dummy/beanbag.jpg'
-import padImage from '../dummy/ipad.jpg'
 
 const ListingModal = ({ listing, onClose }) => {
   if (!listing) return null;
@@ -13,10 +7,10 @@ const ListingModal = ({ listing, onClose }) => {
   return (
     <div className="modal-backdrop">
       <div className="modal">
-        <h2>{listing.title}</h2>
-        <p>Price: ${listing.price}</p>
-        <p>Description: {listing.description}</p>
-        <p>Contact: {listing.contact}</p>
+        <h2>{listing[0]}</h2>
+        <p>Price: ${listing[2]}</p>
+        <p>Description: {listing[1]}</p>
+        <p>Contact: {listing[3]}</p>
         <button onClick={onClose}>Close</button>
       </div>
     </div>
@@ -24,20 +18,24 @@ const ListingModal = ({ listing, onClose }) => {
 };
 
 function Home() {
-  // Static dummy data for listings
-  const dummyListings = [
-    { id: 1, title: 'Calc textbook', price: 50, description: 'Used textbook', contact: 'laz', image: calcImage },
-    { id: 2, title: 'Lamp', price: 10, description: 'Used lamp', contact: 'quinns', image: lampImage },
-    { id: 3, title: 'Cactus', price: 5, description: 'Cute little cactus', contact: 'moranh', image: cactusImage },
-    { id: 4, title: 'Nintendo Switch', price: 45, description: 'Used nintendo switch', contact: 'nwikeb', image: switchImage },
-    { id: 5, title: 'Beanbag chair', price: 30, description: 'Used black bean bag chair', contact: 'laz', image: beanImage },
-    { id: 6, title: 'Ipad', price: 800, description: 'Used ipad', contact: 'laz', image: padImage },
-  ];
 
   const [showCategories, setShowCategories] = useState(false);
   const categories = ['Books', 'Electronics', 'Apparel', 'Furniture', 'Toys'];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
+
+  const [data, setData] = useState([{}])
+
+  useEffect(() => {
+    fetch("/home").then(
+      res => res.json()
+    ).then(
+      data => {
+        setData(data)
+        console.log(data)
+      }
+    )
+  }, [])
 
   // Function to open the modal with the listing details
   const openModal = (listing) => {
@@ -89,15 +87,19 @@ function Home() {
       <section className="new-listings">
         <h2>New Listings</h2>
         <div className="new-listings-grid">
-          {dummyListings.map((listing) => (
-            <div key={listing.id} className="listing-card" onClick={() => openModal(listing)}>
-              <img src={listing.image} alt={listing.title} className="listing-image" />
+          
+          {(typeof data.home === 'undefined') ? (
+            <p>Loading...</p>
+          ) : (data.home.map((unit, i) => (
+            <div key={i} className="listing-card" onClick={() => openModal(unit)}>
+              {/* <img src={listing.image} alt={listing.title} className="listing-image" /> */}
               <div className="listing-details">
-                <h3 className="listing-title">{listing.title}</h3>
-                <p className="listing-price">${listing.price}</p>
+                <h3 className="listing-title">{unit[1]}</h3>
+                <p className="listing-price">${unit[2]}</p>
               </div>
             </div>
-          ))}
+          )))} 
+
         </div>
       </section>
       
