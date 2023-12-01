@@ -9,6 +9,7 @@ DB_PORT = "5432"
 
 conn = None
 
+#creates a connection to the database
 def connect():
     try:
         conn = psycopg2.connect(database=DB_NAME,
@@ -22,6 +23,7 @@ def connect():
         print("Error connecting to PostgreSQL", error)
         return None, None
     
+#creating the tables in the database if they don't exist
 def create_tables():
     """Creates SQL table. Restarts docker container if SQL hasn't initialized yet."""
     cur, conn = connect()
@@ -58,6 +60,7 @@ def create_tables():
         raise ConnectionError('PostgresSQL rejected connection. Trying again')
     return
 
+#inserting some data into the database if it doesn't already exist
 def create_data():
     query = "INSERT INTO listings (listing, title, description, price, contact) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
     query1 = "INSERT INTO listings (listing, title, description, price, contact) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
