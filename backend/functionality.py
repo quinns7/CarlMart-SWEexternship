@@ -11,16 +11,16 @@ conn = None
 
 def connect():
     try:
-        global conn
         conn = psycopg2.connect(database=DB_NAME,
-                            user=DB_USER,
-                            password=DB_PASS,
-                            host=DB_HOST,
-                            port=DB_PORT)
-        print("this worked")
+                                user=DB_USER,
+                                password=DB_PASS,
+                                host=DB_HOST,
+                                port=DB_PORT)
+        cur = conn.cursor()
+        return cur, conn
     except(Exception, psycopg2.Error) as error:
-        print("Error connecting to PostgreSQL", error) 
-        return 
+        print("Error connecting to PostgreSQL", error)
+        return None, None
     
 def create_tables():
     """Creates SQL table. Restarts docker container if SQL hasn't initialized yet."""

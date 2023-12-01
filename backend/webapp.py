@@ -54,7 +54,7 @@ def create_item_listing():
     return
 
 @app.route('/new_user', methods=["POST"])
- def create_user():
+def create_user():
     data = request.get_json()
     data_list = []
     for key in data:
@@ -76,12 +76,11 @@ def get_user_profile():
     return row
 
 #Clicking a link to an item should open up that item's page with a url of /item?listing=quinns214532t645325
-@app.route('/item')
+@app.route('/item', methods=['GET'])
 def get_item():
-    item = request.args.get('listing')
-    row = functionality.select_data("Listings", "listing", item)
-    #return render_template('home.html')
-    return row
+    # Assuming you want to fetch all items for the '/api/item' endpoint
+    items = functionality.select_all_listings()
+    return jsonify(items)
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+    app.run(debug=True, host="0.0.0.0", port=5000)  # The port is specified here
