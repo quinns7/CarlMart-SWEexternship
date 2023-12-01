@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react'
 
 function App() {
 
-  var jsonData = {
-    "users": [
+  /*var jsonData = {
+   "users": [
         {
             "name": "alan", 
             "age": 23,
@@ -15,7 +15,7 @@ function App() {
             "username": "__john__"
         }
     ]
-  }
+  }*/
 
   const [data, setData] = useState([{}])
 
@@ -33,11 +33,26 @@ function App() {
   function handleClick() {
     
     // Send data to the backend via POST
-    fetch('http://127.0.0.1:8080/home', {  // Enter your IP address here
+    fetch('/home', {  // Enter your IP address here
 
       method: 'POST', 
       mode: 'cors', 
-      body: JSON.stringify(jsonData) // body data type must match "Content-Type" header
+      body: JSON.stringify(
+        {
+          "users": [
+              {
+                  "name": "alan", 
+                  "age": 23,
+                  "username": "aturing"
+              },
+              {
+                  "name": "john", 
+                  "age": 29,
+                  "username": "__john__"
+              }
+          ]
+        }
+      ) // body data type must match "Content-Type" header
 
     })
     
