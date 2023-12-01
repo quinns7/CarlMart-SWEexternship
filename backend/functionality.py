@@ -17,9 +17,7 @@ def connect():
                             password=DB_PASS,
                             host=DB_HOST,
                             port=DB_PORT)
-        cur = conn.cursor()
-        print("Connected to database!", flush=True)
-        return cur, conn
+        print("this worked")
     except(Exception, psycopg2.Error) as error:
         print("Error connecting to PostgreSQL", error) 
         return 

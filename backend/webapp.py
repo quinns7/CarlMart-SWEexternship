@@ -14,12 +14,38 @@ def homepage():
     # return {"home": ["backend info 1", "backend info 2", "backend info 3"]}
     return {"home": listings}
 
+#@app.route('/home', methods=["GET", "POST"])
+#def display_data():
+#    data = request.get_json()
+#    print("This is the data that Hannah sent: ")
+#    for key in data:
+#        print(key + ": " + data[key])
+#    #return render_template('home.html')
+#    return
+
+@app.route('/home', methods=["GET", "POST"])
+def display_data():
+    if request.method == "POST":
+        data = request.get_json(silent=True)
+        if data is not None:
+            print("This is the data that Hannah sent: ")
+            for key in data:
+                print(key + ": " + str(data[key]))
+            # Process the received data or perform necessary operations
+            # For example: save data to a database, perform calculations, etc.
+            return "Data received successfully", 200
+        else:
+            return "No JSON data received", 400  # Return a bad request status if no JSON data found
+    else:
+        return {"home": ["backend info 1", "backend info 2", "backend info 3"]}
+
+
 @app.route('/new_item', methods=["POST"])
 def create_item_listing():
     data = request.get_json()
     data_list = []
     for key in data:
-        data_list.append(data[key])
+            data_list.append(data[key])
 
     parsed_data = tuple(data_list)
     functionality.insert_row("Listings", parsed_data)
@@ -28,7 +54,7 @@ def create_item_listing():
     return
 
 @app.route('/new_user', methods=["POST"])
-def create_user():
+ def create_user():
     data = request.get_json()
     data_list = []
     for key in data:
