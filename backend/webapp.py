@@ -26,15 +26,21 @@ def homepage():
 
 @app.route('/home', methods=["GET", "POST"])
 def display_data():
+    if request.is_json:
+        data = request.get_json()
+        # Process the received JSON data
+        print(data)
+    
     if request.method == "POST":
-        data = request.get_json(silent=True)
+        print("Data is being sent!")
+        data = request.get_json()
         if data is not None:
             print("This is the data that Hannah sent: ")
             for key in data:
                 print(key + ": " + str(data[key]))
             # Process the received data or perform necessary operations
             # For example: save data to a database, perform calculations, etc.
-            return "Data received successfully", 200
+            return data
         else:
             return "No JSON data received", 400  # Return a bad request status if no JSON data found
     else:

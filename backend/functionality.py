@@ -26,7 +26,7 @@ def connect():
 #Returns a list of tuples
 def select_query(table, column):
     cur = connect()
-    query = 'SELECT ' + column + 'from ' + table
+    query = "SELECT " + column + "FROM " + table + ";"
     cur.execute(query)
     results = cur.fetchall()
     cur.close()
@@ -37,7 +37,7 @@ def select_query(table, column):
 #Returns a list of tuples
 def select_data(table, column, id):
     cur = connect()
-    query = 'SELECT * from ' + table + " WHERE " + column + " = " + id
+    query = 'SELECT * FROM ' + table + " WHERE " + column + " = " + id + ";"
     cur.execute(query) 
     result = cur.fetchall()
     cur.close()
@@ -49,7 +49,7 @@ def select_data(table, column, id):
 #-Listings: (listing, title, description, price, contact, image)
 def insert_row(table, data):
     cur = connect()
-    query = 'INSERT INTO ' + table + ' VALUES ' + data
+    query = 'INSERT INTO ' + table + ' VALUES ' + data + ";"
     cur.execute(query)
     cur.close()
     return
