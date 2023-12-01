@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
+import cactusImage from '../dummy/cactus.jpg';
+import calcImage from '../dummy/calc.jpg';
+import lampImage from '../dummy/lamp.webp';
+import switchImage from '../dummy/nintendo.jpg'
+import beanImage from '../dummy/beanbag.jpg'
+import padImage from '../dummy/ipad.jpg'
 
 const ListingModal = ({ listing, onClose }) => {
   if (!listing) return null;
@@ -15,6 +21,15 @@ const ListingModal = ({ listing, onClose }) => {
       </div>
     </div>
   );
+};
+
+const imageMap = {
+  cactusImage: cactusImage,
+  calcImage: calcImage,
+  lampImage: lampImage,
+  switchImage: switchImage,
+  beanImage: beanImage,
+  padImage: padImage,
 };
 
 function Home() {
@@ -92,9 +107,9 @@ function Home() {
             <p>Loading...</p>
           ) : (data.home.map((unit, i) => (
             <div key={i} className="listing-card" onClick={() => openModal(unit)}>
-              {/* <img src={listing.image} alt={listing.title} className="listing-image" /> */}
+              <img src={imageMap[unit[4]]} alt={unit[0]} className="listing-image" />
               <div className="listing-details">
-                <h3 className="listing-title">{unit[1]}</h3>
+                <h3 className="listing-title">{unit[0]}</h3>
                 <p className="listing-price">${unit[2]}</p>
               </div>
             </div>
