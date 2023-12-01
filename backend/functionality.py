@@ -59,16 +59,22 @@ def create_tables():
     return
 
 def create_data():
-    query = "INSERT INTO listings (listing, title, description, price, contact) SELECT 'laz1129231230', 'calculus textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
-    # query1 = "INSERT INTO users (username, listings, rating) VALUES ('laz', 'laz1129231230', 5.0);"
-    # query2 = "INSERT INTO users (username, rating) VALUES ('nwikeb', 5.0);"
-    # query3 = "INSERT INTO users (username, listings, rating) VALUES ('moranh', 'moranh1130230500', 5.0);"
-    # query4 = "INSERT INTO listings (listing, title, description, price, contact) VALUES ('moranh1130231045', 'leather couch', 'gently used black leather couch', 30, 'moranh@carleton.edu');"
+    query = "INSERT INTO listings (listing, title, description, price, contact) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
+    query1 = "INSERT INTO listings (listing, title, description, price, contact) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
+    query2 = "INSERT INTO listings (listing, title, description, price, contact) SELECT 'nwikeb1201231500', 'Cactus', 'Cute little cactus', 5, 'nwikeb@carleton.edu' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'nwikeb1201231500')"    
+    query3 = "INSERT INTO listings (listing, title, price, contact) SELECT 'quinns0112230950', 'Nintendo Switch', 45, 'quinns@carleton.edu'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
+    query4 = "INSERT INTO listings (listing, title, price, contact) SELECT 'quinns0112230950', 'Beanbag chair', 30, 'quinns@carleton.edu'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
+    query5 = "INSERT INTO listings (listing, title, price, contact) SELECT 'quinns0112230950', 'Ipad', 800, 'quinns@carleton.edu'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
+
+    queries = [query, query1, query2, query3, query4, query5]
     cur, conn = connect()
-    cur.execute(query)
+    for query in queries:
+        cur.execute(query)
     conn.commit()
     cur.close()
     conn.close()
+
+
 #grabs a specific column list from the specifed table.  
 #Returns a list of tuples
 def select_query(table, column):
