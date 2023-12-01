@@ -1,81 +1,40 @@
-import React, { useState, useEffect } from 'react'
+// Home.js
+import React, { useState, useEffect } from 'react';
+import '../styles/Home.css';
 
-function App() {
-
-  var jsonData = {
-    "users": [
-        {
-            "name": "alan", 
-            "age": 23,
-            "username": "aturing"
-        },
-        {
-            "name": "john", 
-            "age": 29,
-            "username": "__john__"
-        }
-    ]
-  }
-
-  const [data, setData] = useState([{}])
+function Home() {
+  const [newListings, setNewListings] = useState([]);
 
   useEffect(() => {
-    fetch("/home").then(
-      res => res.json()
-    ).then(
-      data => {
-        setData(data)
-        console.log(data)
+    async function fetchNewListings() {
+      try {
+        const response = fetch('/api/item'); // replace endpoint
+        const data = response.json();
+        setNewListings(data);
+      } catch (error) {
+        console.error('Error fetching new listings:', error);
       }
-    )
-  }, [])
+    }
 
-  function handleClick() {
-    
-    // Send data to the backend via POST
-    fetch('http://127.0.0.1:8080/home', {  // Enter your IP address here
-
-      method: 'POST', 
-      mode: 'cors', 
-      body: JSON.stringify(jsonData) // body data type must match "Content-Type" header
-
-    })
-    
-  }
+    fetchNewListings();
+  }, []);
 
   return (
-    <>
-      <div>
-
-          {(typeof data.home === 'undefined') ? (
-            <p>Loading...</p>
-          ) : (
-            data.home.map((unit, i) => (
-              <p key={i}> {unit} </p>
-            ))
-          )}
-
-      </div>
-
-      <form>
-      <label>
-        Test text data:
-        <input type="text" name="name" />
-      </label>
-      <input type="submit" value="Submit" />
-      </form>
-
-      <div onClick={handleClick} style={{
-      textAlign: 'center',
-      width: '100px',
-      border: '1px solid gray',
-      borderRadius: '5px'
-    }}>
-      Send data to backend
+    <div className="home-container">
+      <section className="new-listings">
+        <h2>New Listings</h2>
+        <div className="listings-grid">
+          {newListings.map((listing, index) => (
+            <div key={index} className="listing-card">
+              <h3>{listing.title}</h3>
+              <p className="price">${listing.price}</p>
+            </div>
+          ))}
+        </div>
+      </section>
     </div>
-
-      </>
-  )
+  );
 }
 
-export default App
+export default Home;
+
