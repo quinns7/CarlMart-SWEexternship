@@ -8,6 +8,8 @@ app = Flask(__name__)
 @app.route('/home')
 def homepage():
     #return render_template('home.html')
+    functionality.create_tables()
+    functionality.create_data()
     listings = functionality.select_all_listings()
     # return {"home": ["backend info 1", "backend info 2", "backend info 3"]}
     return {"home": listings}
