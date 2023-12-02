@@ -80,7 +80,7 @@ def create_data():
 #Returns a list of tuples
 def select_query(table, column):
     cur, conn = connect()
-    query = 'SELECT ' + column + 'from ' + table
+    query = "SELECT " + column + "FROM " + table + ";"
     cur.execute(query)
     results = cur.fetchall()
     cur.close()
@@ -92,7 +92,7 @@ def select_query(table, column):
 #Returns a list of tuples
 def select_data(table, column, id):
     cur, conn = connect()
-    query = 'SELECT * from ' + table + " WHERE " + column + " = " + id
+    query = 'SELECT * FROM ' + table + " WHERE " + column + " = " + id + ";"
     cur.execute(query) 
     result = cur.fetchall()
     cur.close()
@@ -105,7 +105,7 @@ def select_data(table, column, id):
 #-Listings: (listing, title, description, price, contact, image)
 def insert_row(table, data):
     cur, conn = connect()
-    query = 'INSERT INTO ' + table + ' VALUES ' + data
+    query = 'INSERT INTO ' + table + ' VALUES ' + data + ";"
     cur.execute(query)
     cur.close()
     conn.close()
@@ -124,6 +124,19 @@ def select_all_listings():
     conn.close()
     return result
 
+def delete_data(table, column, id):
+    cur, conn = connect()
+    query = 'DELETE FROM '+ table + 'WHERE ' + column + " = " + id + ";"
+    try:
+        cur.execute(query)
+        result = 1 
+    except Exception as e:
+        print("Error executing SQL query: ", e)
+        result = 0
+
+    cur.close()
+    conn.close()
+    return result
 
 
 if __name__ == "__main__":

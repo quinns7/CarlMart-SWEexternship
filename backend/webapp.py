@@ -23,10 +23,10 @@ def homepage():
 #    #return render_template('home.html')
 #    return
 
-@app.route('/home', methods=["GET", "POST"])
+@app.route('/test', methods=["GET", "POST"])
 def display_data():
     if request.method == "POST":
-        data = request.get_json(silent=True)
+        data = request.get_json()
         if data is not None:
             print("This is the data that Hannah sent: ")
             for key in data:
@@ -81,6 +81,29 @@ def get_item():
     # Assuming you want to fetch all items for the '/api/item' endpoint
     items = functionality.select_all_listings()
     return jsonify(items)
+
+@app.route('/item/delete')
+def delete_listing()
+    item = request.args.get('listing')
+    result = functionality.delete_data("Listings", "listing", item)
+    if(result = 1):
+        return "Data deleted successfully", 200
+    else:
+        return "Deletion failed", 400
+
+#Debating whether to leave this as constructing the contact under the assumption that it's an email
+@app.route('/my_items', methods =['GET'])
+def view_items()
+    id = request.args.get('username')
+    user = id + "@carleton.edu"
+    listings = None
+    try:
+        listings = functionality.select_data("Listings", "contact", user)
+        return jsonify(listings)
+    except Exception as e:
+        print("Error: ", e)
+        return "No data at that location", 400 
+    
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)  # The port is specified here
