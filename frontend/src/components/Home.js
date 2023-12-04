@@ -18,6 +18,29 @@ const ListingModal = ({ listing, onClose }) => {
     }
   };
 
+  const NewListingModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <div className="modal-backdrop" onClick={onClose}>
+        <div className="modal" onClick={e => e.stopPropagation()}>
+          <div className="modal-content">
+            <h2>New Listing</h2>
+            <form>
+              {/* Form fields for new listing */}
+              <input type="text" placeholder="Title" />
+              <input type="number" placeholder="Price" />
+              <textarea placeholder="Description"></textarea>
+              <input type="text" placeholder="Contact Info" />
+            </form>
+            <button onClick={onClose}>Close</button>
+            <button type="submit">Submit</button>
+          </div>
+        </div>
+      </div>
+    );
+  };  
+
   return (
     <div className="modal-backdrop" onClick={handleOutsideClick}>
       <div className="modal">
@@ -54,6 +77,7 @@ function Home() {
   const categories = ['Books', 'Electronics', 'Apparel', 'Furniture', 'Toys'];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
+  const [isNewListingModalOpen, setIsNewListingModalOpen] = useState(false);
 
   // Function to open the modal with the listing details
   const openModal = (listing) => {
@@ -66,6 +90,21 @@ function Home() {
     setIsModalOpen(false);
     setSelectedListing(null); // Also clear the selected listing
   };
+
+  const NewListingModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <div className="modal-backdrop" onClick={onClose}>
+        <div className="modal" onClick={e => e.stopPropagation()}>
+          <button onClick={onClose}>Close</button>
+        </div>
+      </div>
+    );
+  };
+  
+  const openNewListingModal = () => setIsNewListingModalOpen(true);
+  const closeNewListingModal = () => setIsNewListingModalOpen(false);
 
   return (
     <div className="home-container">
@@ -95,9 +134,12 @@ function Home() {
         </div>
     
         <div className="nav-buttons">
-          <button className="nav-item" onClick={() => console.log('New Listing clicked')}>
-            <span role="img" aria-label="add">+</span> New Listing
-          </button>
+        <button className="nav-item" onClick={openNewListingModal}>
+          <span role="img" aria-label="add">+</span> New Listing
+        </button>
+        {isNewListingModalOpen && <NewListingModal 
+          isOpen={isNewListingModalOpen} onClose={closeNewListingModal} />}
+
           <Link to ="/login">
             <button className="nav-item" onClick={() => console.log('Sign In clicked')}> <span role="img" aria-label="person">👤</span> </button>
           </Link>
