@@ -1,0 +1,79 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+
+.login-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #e3f1fc;
+}
+
+.login-logo {
+  position: absolute;
+  top: -5%; 
+  width: 500px; 
+  height: auto;
+}
+
+.login-form {
+  position: absolute;
+  top: 50%; 
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; 
+}
+
+.login-form button {
+  font-family: 'Inter';
+  padding: 10px;
+  margin-bottom: 1rem; 
+  border: 1px solid #003365;
+  font-size: 24px;
+  border-radius: 12px;
+  background: #003365;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.login-form input {
+  color: #000;
+  text-align: center;
+  font-family: 'Inter';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 10px 15px;
+  margin-bottom: 1rem; 
+  font-size: 24px;
+  color: #333; 
+  border-radius: 12px;
+}
+
+.login-form input::placeholder {
+  color: #888; 
+  opacity: 1; 
+}
+
+.signup-prompt {
+  position: absolute;
+  top: 82%; 
+  width: 100%;
+  text-align: center; 
+  color: #231F20;
+  font-family: 'Inter';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.signup-link {
+  color: #007bff;
+  cursor: pointer;
+  font-weight: bold;
+}

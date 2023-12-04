@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import './Home.css';
 import cactusImage from '../dummy/cactus.jpg';
 import calcImage from '../dummy/calc.jpg';
@@ -54,9 +55,12 @@ function Home() {
   return (
     <div className="home-container">
       <header className="header">
-        <div className="nav-logo">CarlMart</div>
+        <Link to ="/"> 
+          <div className="nav-logo">CarlMart</div>
+        </Link>
+        
+        <input type="text" placeholder="Search..." className="search-bar" />
 
-        {/* Categories Dropdown */}
         <div className="categories">
           <button onClick={() => setShowCategories(!showCategories)}>
             <div className="hamburger-icon">
@@ -74,15 +78,14 @@ function Home() {
             </div>
           )}
         </div>
-      
-        <input type="text" placeholder="Search..." className="search-bar" />
+    
         <div className="nav-buttons">
           <button className="nav-item" onClick={() => console.log('New Listing clicked')}>
-            <span role="img" aria-label="add">➕</span> New Listing
+            <span role="img" aria-label="add">+</span> New Listing
           </button>
-          <button className="nav-item" onClick={() => console.log('Sign In clicked')}>
-            <span role="img" aria-label="person">👤</span> Sign In
-          </button>
+          <Link to ="/login">
+            <button className="nav-item" onClick={() => console.log('Sign In clicked')}> <span role="img" aria-label="person">👤</span> </button>
+          </Link>
         </div>
       </header>
 
