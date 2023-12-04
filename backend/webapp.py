@@ -32,34 +32,21 @@ def login():
             return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
     return jsonify({"login": "no info received"})
 
-@app.route('/test', methods=["GET", "POST"])
-def display_data():
+@app.route('/new-listing', methods=["POST"])
+def create_item_listing():
     if request.method == "POST":
         data = request.get_json()
         if data is not None:
-            print("This is the data that Hannah sent: ")
+            data_list = []
             for key in data:
-                print(key + ": " + str(data[key]))
-            # Process the received data or perform necessary operations
-            # For example: save data to a database, perform calculations, etc.
-            return "Data received successfully", 200
+                    data_list.append(data[key])
+
+            parsed_data = tuple(data_list)
+            print(parsed_data)
+            # functionality.insert_row("Listings", parsed_data)
+            return jsonify({"message": "Json data received"})
         else:
-            return "No JSON data received", 400  # Return a bad request status if no JSON data found
-    else:
-        return {"home": ["backend info 1", "backend info 2", "backend info 3"]}
-
-
-@app.route('/new_item', methods=["POST"])
-def create_item_listing():
-    data = request.get_json()
-    data_list = []
-    for key in data:
-            data_list.append(data[key])
-
-    parsed_data = tuple(data_list)
-    functionality.insert_row("Listings", parsed_data)
-
-    #return render_template('home.html')
+            return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
     return
 
 @app.route('/new_user', methods=["POST"])
