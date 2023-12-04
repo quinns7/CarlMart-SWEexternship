@@ -1,8 +1,10 @@
 from flask import Flask, jsonify, request
 import psycopg2
 import functionality
+from flask_cors import CORS  # Import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/')
 @app.route('/home')
@@ -14,14 +16,21 @@ def homepage():
     # return {"home": ["backend info 1", "backend info 2", "backend info 3"]}
     return {"home": listings}
 
-#@app.route('/home', methods=["GET", "POST"])
-#def display_data():
-#    data = request.get_json()
-#    print("This is the data that Hannah sent: ")
-#    for key in data:
-#        print(key + ": " + data[key])
-#    #return render_template('home.html')
-#    return
+
+@app.route('/login', methods=["POST"])
+def login():
+    if request.method == "POST":
+        data = request.get_json(silent=True)
+        if data is not None:
+            print("This is the data from the login page: ", flush=True)
+            for key in data:
+                print(key + ": " + str(data[key]))
+            # Process the received data or perform necessary operations
+            # For example: save data to a database, perform calculations, etc.
+            return jsonify({"message": "Data received successfully"}) #200
+        else:
+            return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
+    return jsonify({"login": "no info received"})
 
 @app.route('/test', methods=["GET", "POST"])
 def display_data():
@@ -83,17 +92,17 @@ def get_item():
     return jsonify(items)
 
 @app.route('/item/delete')
-def delete_listing()
+def delete_listing():
     item = request.args.get('listing')
-    result = functionality.delete_data("Listings", "listing", item)
-    if(result = 1):
+    result = functionality.delete_data("listings", "listing", item)
+    if result == 1:
         return "Data deleted successfully", 200
     else:
         return "Deletion failed", 400
 
 #Debating whether to leave this as constructing the contact under the assumption that it's an email
 @app.route('/my_items', methods =['GET'])
-def view_items()
+def view_items():
     id = request.args.get('username')
     user = id + "@carleton.edu"
     listings = None
