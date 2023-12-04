@@ -8,6 +8,8 @@ COPY . .
 RUN pip install flask
 # RUN pip install requests
 RUN pip install psycopg2
+RUN pip install psycopg2
+RUN pip install flask-cors
 
 EXPOSE 5555
 
