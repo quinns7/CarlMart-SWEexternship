@@ -10,6 +10,7 @@
 }
 
 .login-logo {
+  left: 32.75%;
   position: absolute;
   top: -5%; 
   width: 500px; 
@@ -18,7 +19,7 @@
 
 .login-form {
   position: absolute;
-  top: 50%; 
+  top: 44%; 
   width: 100%;
   max-width: 320px;
   display: flex;
@@ -61,7 +62,7 @@
 
 .signup-prompt {
   position: absolute;
-  top: 82%; 
+  top: 76%; 
   width: 100%;
   text-align: center; 
   color: #231F20;

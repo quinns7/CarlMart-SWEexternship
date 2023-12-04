@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import { useNavigate } from "react-router-dom";
 import './LogIn.css'; 
 import logo from '../dummy/icon.png'
@@ -20,7 +21,7 @@ const LogIn = () => {
 
   return (
     <div className="login-container">
-      <img src={logo} alt="logo" className="login-logo" />
+      <Link to ="/"> <img src={logo} alt="logo" className="login-logo" /> </Link>
       <form onSubmit={handleSubmit} className="login-form">
         <input 
           type="email" 
@@ -42,7 +43,6 @@ const LogIn = () => {
         Don't have an account? <br />
         <span className="signup-link" onClick={handleNavigateToSignUp}>Create one!</span>
       </div>
-
     </div>
   );
 }
