@@ -11,18 +11,33 @@ import padImage from '../dummy/ipad.jpg'
 const ListingModal = ({ listing, onClose }) => {
   if (!listing) return null;
 
+  // Handle outside click
+  const handleOutsideClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="modal-backdrop">
+    <div className="modal-backdrop" onClick={handleOutsideClick}>
       <div className="modal">
-        <h2>{listing.title}</h2>
-        <p>Price: ${listing.price}</p>
-        <p>Description: {listing.description}</p>
-        <p>Contact: {listing.contact}</p>
-        <button onClick={onClose}>Close</button>
+        <button className="modal-close-button" onClick={onClose}>X</button>
+        <div className="modal-content">
+          <div className="modal-image-container">
+            <img src={listing.image} alt={listing.title} className="modal-image" />
+          </div>
+          <div className="modal-text">
+            <h2>{listing.title}</h2>
+            <p>Price: ${listing.price}</p>
+            <p>Description: {listing.description}</p>
+            <p>Contact: {listing.contact}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
+
 
 function Home() {
   // Static dummy data for listings
@@ -107,7 +122,7 @@ function Home() {
       {isModalOpen && <ListingModal listing={selectedListing} onClose={closeModal} />}
 
       <footer className="footer">
-        <p>© {new Date().getFullYear()} CarlMart, Inc. All rights reserved.</p>
+        <p> {new Date().getFullYear()} CarlMart, Inc. <br /> All rights reserved.</p>
       </footer>
       
     </div>

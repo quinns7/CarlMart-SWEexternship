@@ -4,6 +4,7 @@ html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    font-family: 'Gotham';
 }
 
 .header {
@@ -13,7 +14,7 @@ html, body {
   padding: 10px 20px;
   background: linear-gradient(to right, #c6d8c2, #b8dad6, #bbe7ef);
   font-family: 'Gotham';
-  font-weight: 700; /* Gotham bolder for the header */
+  font-weight: 700; 
 }
 
 a {
@@ -108,7 +109,7 @@ a {
   margin: 0; 
   font-size: 25px;
   color: #003069; 
-  font: 'Gotham';
+  font-family: 'Gotham';
   font-weight: lighter;
 }
 
@@ -118,7 +119,6 @@ a {
   grid-gap: 30px; 
   justify-content: center; 
   padding: 20px;
-  font: 'Gotham';
 }
 
 .listing-card {
@@ -129,6 +129,7 @@ a {
   display: flex;
   flex-direction: column; 
   justify-content: space-between;
+  font-family: 'Gotham';
 }
 
 .listing-card img {
@@ -151,6 +152,7 @@ a {
   font-size: 1rem;
   color: #666;
 }
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -165,6 +167,7 @@ a {
 }
 
 .modal {
+  position: relative;
   background: white;
   padding: 20px;
   border-radius: 5px;
@@ -175,11 +178,45 @@ a {
   overflow-y: auto;
 }
 
+.modal-close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  border: none;
+  background: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: red;
+}
+
+.modal-content {
+  display: flex;
+  align-items: start;
+  gap: 20px;
+}
+
+.modal-image-container {
+  flex: 1; 
+}
+
+.modal-image {
+  width: 100%; 
+  height: auto; 
+  border-radius: 8px; 
+}
+
+.modal-text {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; 
+}
+
 .footer {
-  font-size: 15px;
+  font-size: 13px;
   background-color: #333; 
   color: #fff; 
   text-align: center; 
-  padding: 10px 0; 
+  padding: 4px 0; 
   width: 100%; 
 }
