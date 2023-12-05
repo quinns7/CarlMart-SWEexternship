@@ -44,8 +44,7 @@ def post_item_listing():
             return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
     return
 
-
-@app.route('/new_user', methods=["POST"])
+@app.route('/signup', methods=["POST"])
 def create_user():
     data = request.get_json()
     data_list = []
@@ -53,7 +52,7 @@ def create_user():
         data_list.append(data[key])
 
     parsed_data = tuple(data_list)
-    functionality.insert_row("Users", parsed_data)
+    functionality.insert_row("users", parsed_data)
 
     #return render_template('home.html')
     return
@@ -63,7 +62,7 @@ def create_user():
 @app.route('/user')
 def get_user_profile():
     user_name = request.args.get('username')
-    row = functionality.select_data("Users", "username", user_name)
+    row = functionality.select_data("users", "username", user_name)
     #return render_template('home.html')
     return row
 
@@ -90,7 +89,7 @@ def view_items():
     user = id + "@carleton.edu"
     listings = None
     try:
-        listings = functionality.select_data("Listings", "contact", user)
+        listings = functionality.select_data("listings", "contact", user)
         return jsonify(listings)
     except Exception as e:
         print("Error: ", e)

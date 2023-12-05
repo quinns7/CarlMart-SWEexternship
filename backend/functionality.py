@@ -103,7 +103,6 @@ def select_data(table, column, id):
 #-Users: (username, listings, rating)
 #-Listings: (listing, title, description, price, contact, image)
 def insert_row(table, columns, data):
-    cur, conn = connect()
     query = 'INSERT INTO ' + table + columns + ' VALUES ' + data + ";"
     cur.execute(query)
     conn.commit()
