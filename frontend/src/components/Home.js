@@ -6,6 +6,8 @@ import lampImage from '../dummy/lamp.webp';
 import switchImage from '../dummy/nintendo.jpg'
 import beanImage from '../dummy/beanbag.jpg'
 import padImage from '../dummy/ipad.jpg'
+import { useNavigate } from "react-router-dom";
+
 
 const ListingModal = ({ listing, onClose }) => {
   if (!listing) return null;
@@ -38,6 +40,7 @@ function Home() {
   const categories = ['Books', 'Electronics', 'Apparel', 'Furniture', 'Toys'];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
+  const navigate = useNavigate();
 
   const [data, setData] = useState([{}])
 
@@ -62,6 +65,10 @@ function Home() {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedListing(null); // Also clear the selected listing
+  };
+
+  const handleNavToNewListing = () => {
+    navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
   };
 
   return (
@@ -90,7 +97,7 @@ function Home() {
       
         <input type="text" placeholder="Search..." className="search-bar" />
         <div className="nav-buttons">
-          <button className="nav-item" onClick={() => console.log('New Listing clicked')}>
+          <button className="nav-item" onClick={handleNavToNewListing}>
             <span role="img" aria-label="add">➕</span> New Listing
           </button>
           <button className="nav-item" onClick={() => console.log('Sign In clicked')}>

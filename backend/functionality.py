@@ -1,4 +1,5 @@
 import psycopg2
+from datetime import datetime
 
 DB_NAME = "carlmart"
 DB_USER = "postgres"
@@ -53,8 +54,6 @@ def create_tables():
         # commit the changes
         conn.commit()
         conn.close()
-        print("Table Created successfully")
-
     except:
         raise ConnectionError('PostgresSQL rejected connection. Trying again')
     return
@@ -103,14 +102,16 @@ def select_data(table, column, id):
 #Format:
 #-Users: (username, listings, rating)
 #-Listings: (listing, title, description, price, contact, image)
-def insert_row(table, data):
-    cur, conn = connect()
-    query = 'INSERT INTO ' + table + ' VALUES ' + str(data) + ";"
+def insert_row(table, columns, data):
+    query = 'INSERT INTO ' + table + columns + ' VALUES ' + data + ";"
     cur.execute(query)
+    conn.commit()
     cur.close()
     conn.close()
     return
 
+#returns the title, description, price, contact, and image for all listings in the listings datatable
+#returns a list of tuples
 def select_all_listings():
     cur, conn = connect()
     query = 'SELECT title, description, price, contact, image FROM "listings";'
@@ -138,6 +139,25 @@ def delete_data(table, column, id):
     conn.close()
     return result
 
+#TODO make listing id connect to signed-in username
+def create_new_listing(data):
+    data_list = []
+    columns = "("
+    for key in data:
+            if data[key] != '':
+                data_list.append(data[key])
+                columns += key + ", "
+    columns += "listing)"
+    listing_id = create_listing_id("quinns")
+    data_list.append(listing_id)
+    parsed_data = str(tuple(data_list))
+    return columns, parsed_data
+
+def create_listing_id(username):
+    now = datetime.now()
+    dt_string = now.strftime("%m%d%Y%H%M%S")
+    listing_id = username + dt_string
+    return listing_id
 
 if __name__ == "__main__":
     connect()
