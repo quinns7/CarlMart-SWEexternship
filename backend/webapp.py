@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 import psycopg2
 import functionality
 from flask_cors import CORS  # Import CORS
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
@@ -32,18 +33,31 @@ def login():
             return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
     return jsonify({"login": "no info received"})
 
+#TODO make listing id connect to signed-in username
+#TODO make some helper functions
 @app.route('/new-listing', methods=["POST"])
 def create_item_listing():
     if request.method == "POST":
         data = request.get_json()
         if data is not None:
             data_list = []
+            columns = "("
             for key in data:
-                    data_list.append(data[key])
-
-            parsed_data = tuple(data_list)
-            print(parsed_data)
-            # functionality.insert_row("Listings", parsed_data)
+                    print(data[key])
+                    if data[key] is not '':
+                        print("in if statement")
+                        data_list.append(data[key])
+                        columns += key + ", "
+            now = datetime.now()
+            dt_string = now.strftime("%m%d%Y%H%M")
+            listing_id = "quinns" + dt_string
+            columns += "listing)"
+            data_list.append(listing_id)
+            parsed_data = str(tuple(data_list))
+            print(parsed_data, flush=True)
+            print(columns, flush=True)
+            functionality.insert_row("listings", columns, parsed_data)
+            print(functionality.select_all_listings())
             return jsonify({"message": "Json data received"})
         else:
             return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400

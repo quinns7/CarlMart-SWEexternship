@@ -46,6 +46,10 @@ function NewListing() {
     }
   };
 
+  const handleNavToNewListing = () => {
+    navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
+  };
+
   return (
     <div className="listing-container">
       <header className="header">
@@ -72,7 +76,7 @@ function NewListing() {
       
         <input type="text" placeholder="Search..." className="search-bar" />
         <div className="nav-buttons">
-          <button className="nav-item" onClick={() => console.log('New Listing clicked')}>
+          <button className="nav-item" onClick={handleNavToNewListing}>
             <span role="img" aria-label="add">➕</span> New Listing
           </button>
           <button className="nav-item" onClick={() => console.log('Sign In clicked')}>
