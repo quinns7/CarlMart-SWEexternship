@@ -105,7 +105,7 @@ def select_data(table, column, id):
 #-Listings: (listing, title, description, price, contact, image)
 def insert_row(table, data):
     cur, conn = connect()
-    query = 'INSERT INTO ' + table + ' VALUES ' + data + ";"
+    query = 'INSERT INTO ' + table + ' VALUES ' + str(data) + ";"
     cur.execute(query)
     cur.close()
     conn.close()
