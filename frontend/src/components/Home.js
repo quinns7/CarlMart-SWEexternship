@@ -1,9 +1,5 @@
-<<<<<<< HEAD
-import React, { useState, useEffect } from 'react';
-=======
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
->>>>>>> frontend
 import './Home.css';
 import cactusImage from '../dummy/cactus.jpg';
 import calcImage from '../dummy/calc.jpg';
@@ -11,8 +7,6 @@ import lampImage from '../dummy/lamp.webp';
 import switchImage from '../dummy/nintendo.jpg'
 import beanImage from '../dummy/beanbag.jpg'
 import padImage from '../dummy/ipad.jpg'
-import { useNavigate } from "react-router-dom";
-
 
 const ListingModal = ({ listing, onClose }) => {
   if (!listing) return null;
@@ -24,28 +18,28 @@ const ListingModal = ({ listing, onClose }) => {
     }
   };
 
-  const NewListingModal = ({ isOpen, onClose }) => {
-    if (!isOpen) return null;
+  // const NewListingModal = ({ isOpen, onClose }) => {
+  //   if (!isOpen) return null;
   
-    return (
-      <div className="modal-backdrop" onClick={onClose}>
-        <div className="modal" onClick={e => e.stopPropagation()}>
-          <div className="modal-content">
-            <h2>New Listing</h2>
-            <form>
-              {/* Form fields for new listing */}
-              <input type="text" placeholder="Title" />
-              <input type="number" placeholder="Price" />
-              <textarea placeholder="Description"></textarea>
-              <input type="text" placeholder="Contact Info" />
-            </form>
-            <button onClick={onClose}>Close</button>
-            <button type="submit">Submit</button>
-          </div>
-        </div>
-      </div>
-    );
-  };  
+  //   return (
+  //     <div className="modal-backdrop" onClick={onClose}>
+  //       <div className="modal" onClick={e => e.stopPropagation()}>
+  //         <div className="modal-content">
+  //           <h2>New Listing</h2>
+  //           <form>
+  //             {/* Form fields for new listing */}
+  //             <input type="text" placeholder="Title" />
+  //             <input type="number" placeholder="Price" />
+  //             <textarea placeholder="Description"></textarea>
+  //             <input type="text" placeholder="Contact Info" />
+  //           </form>
+  //           <button onClick={onClose}>Close</button>
+  //           <button type="submit">Submit</button>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // };  
 
   return (
     <div className="modal-backdrop" onClick={handleOutsideClick}>
@@ -69,6 +63,15 @@ const ListingModal = ({ listing, onClose }) => {
 
 
 function Home() {
+  // Static dummy data for listings
+  const dummyListings = [
+    { id: 1, title: 'Calc textbook', price: 50, description: 'Used textbook', contact: 'laz', image: calcImage },
+    { id: 2, title: 'Lamp', price: 10, description: 'Used lamp', contact: 'quinns', image: lampImage },
+    { id: 3, title: 'Cactus', price: 5, description: 'Cute little cactus', contact: 'moranh', image: cactusImage },
+    { id: 4, title: 'Nintendo Switch', price: 45, description: 'Used nintendo switch', contact: 'nwikeb', image: switchImage },
+    { id: 5, title: 'Beanbag chair', price: 30, description: 'Used black bean bag chair', contact: 'laz', image: beanImage },
+    { id: 6, title: 'Ipad', price: 800, description: 'Used ipad', contact: 'laz', image: padImage },
+  ];
 
   const [showCategories, setShowCategories] = useState(false);
   const categories = ['Books', 'Electronics', 'Apparel', 'Furniture', 'Toys'];
@@ -88,9 +91,20 @@ function Home() {
     setSelectedListing(null); // Also clear the selected listing
   };
 
-  const handleNavToNewListing = () => {
-    navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
+  const NewListingModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <div className="modal-backdrop" onClick={onClose}>
+        <div className="modal" onClick={e => e.stopPropagation()}>
+          <button onClick={onClose}>Close</button>
+        </div>
+      </div>
+    );
   };
+  
+  const openNewListingModal = () => setIsNewListingModalOpen(true);
+  const closeNewListingModal = () => setIsNewListingModalOpen(false);
 
   return (
     <div className="home-container">
@@ -135,19 +149,15 @@ function Home() {
       <section className="new-listings">
         <h2>New Listings</h2>
         <div className="new-listings-grid">
-          
-          {(typeof data.home === 'undefined') ? (
-            <p>Loading...</p>
-          ) : (data.home.map((unit, i) => (
-            <div key={i} className="listing-card" onClick={() => openModal(unit)}>
-              <img src={imageMap[unit[4]]} alt={unit[0]} className="listing-image" />
+          {dummyListings.map((listing) => (
+            <div key={listing.id} className="listing-card" onClick={() => openModal(listing)}>
+              <img src={listing.image} alt={listing.title} className="listing-image" />
               <div className="listing-details">
-                <h3 className="listing-title">{unit[0]}</h3>
-                <p className="listing-price">${unit[2]}</p>
+                <h3 className="listing-title">{listing.title}</h3>
+                <p className="listing-price">${listing.price}</p>
               </div>
             </div>
-          )))} 
-
+          ))}
         </div>
       </section>
       

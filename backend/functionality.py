@@ -19,16 +19,19 @@ def connect():
                                 port=DB_PORT)
         cur = conn.cursor()
         return cur, conn
-    except(Exception, psycopg2.Error) as error:
+    except (Exception, psycopg2.Error) as error:
         print("Error connecting to PostgreSQL", error)
         return None, None
     
 #creating the tables in the database if they don't exist
 def create_tables():
-    """Creates SQL table. Restarts docker container if SQL hasn't initialized yet."""
+    """Creates SQL tables. Restarts docker container if SQL hasn't initialized yet."""
     cur, conn = connect()
+    if cur is None or conn is None:
+        print("Failed to get cursor and connection")
+        return
     try:
-        # executing queries to create table
+        # SQL query to create the 'listings' table
         cur.execute("""
         CREATE TABLE IF NOT EXISTS 
             listings(
@@ -42,21 +45,23 @@ def create_tables():
             );
         """)
 
+        # SQL query to create the 'users' table with a 'password' column
         cur.execute("""
         CREATE TABLE IF NOT EXISTS 
             users( 
                 username varchar(50) PRIMARY KEY,
+                password varchar(255), 
                 listings text,
                 rating real
             );
         """)
-        
-        # commit the changes
+
         conn.commit()
-        conn.close()
-    except:
-        raise ConnectionError('PostgresSQL rejected connection. Trying again')
-    return
+    except Exception as e:
+        print("Error while creating tables:", e)
+    finally:
+        if conn:
+            conn.close()
 
 #inserting some data into the database if it doesn't already exist
 def create_data():
@@ -90,9 +95,10 @@ def select_query(table, column):
 #Useful if looking for data related to a specifc user, item, etc.
 #Returns a list of tuples
 def select_data(table, column, id):
+    # Ensure string literals are properly quoted
     cur, conn = connect()
-    query = 'SELECT * FROM ' + table + " WHERE " + column + " = " + id + ";"
-    cur.execute(query) 
+    query = f"SELECT * FROM {table} WHERE {column} = '{id}';"
+    cur.execute(query)
     result = cur.fetchall()
     cur.close()
     conn.close()
@@ -103,12 +109,16 @@ def select_data(table, column, id):
 #-Users: (username, listings, rating)
 #-Listings: (listing, title, description, price, contact, image)
 def insert_row(table, columns, data):
-    query = 'INSERT INTO ' + table + columns + ' VALUES ' + data + ";"
-    cur.execute(query)
-    conn.commit()
-    cur.close()
-    conn.close()
-    return
+    cur, conn = connect()
+    try:
+        query = f'INSERT INTO {table} {columns} VALUES {data};'
+        cur.execute(query)
+        conn.commit()
+    except Exception as e:
+        print(f"Error inserting data into {table}: {e}")
+    finally:
+        cur.close()
+        conn.close()
 
 #returns the title, description, price, contact, and image for all listings in the listings datatable
 #returns a list of tuples

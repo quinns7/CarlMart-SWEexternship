@@ -6,6 +6,8 @@ from flask_cors import CORS  # Import CORS
 app = Flask(__name__)
 CORS(app)
 
+functionality.create_tables()
+
 @app.route('/')
 @app.route('/home')
 def homepage():
@@ -13,24 +15,17 @@ def homepage():
     functionality.create_tables()
     functionality.create_data()
     listings = functionality.select_all_listings()
-    # return {"home": ["backend info 1", "backend info 2", "backend info 3"]}
     return {"home": listings}
 
 
 @app.route('/login', methods=["POST"])
 def login():
-    if request.method == "POST":
-        data = request.get_json(silent=True)
-        if data is not None:
-            print("This is the data from the login page: ", flush=True)
-            for key in data:
-                print(key + ": " + str(data[key]))
-            # Process the received data or perform necessary operations
-            # For example: save data to a database, perform calculations, etc.
-            return jsonify({"message": "Data received successfully"}) #200
-        else:
-            return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
-    return jsonify({"login": "no info received"})
+    data = request.get_json()
+    user = functionality.select_data("users", "username", data['username'])
+    if user and user[0][1] == data['password']:
+        return jsonify({"message": "Login successful"}), 200
+    else:
+        return jsonify({"message": "Invalid username or password"}), 401
 
 @app.route('/new-listing', methods=["POST"])
 def post_item_listing():
@@ -44,19 +39,26 @@ def post_item_listing():
             return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
     return
 
+
 @app.route('/signup', methods=["POST"])
 def create_user():
-    data = request.get_json()
-    data_list = []
-    for key in data:
-        data_list.append(data[key])
+    try:
+        data = request.get_json()
+        print("Received data:", data)
 
-    parsed_data = tuple(data_list)
-    functionality.insert_row("users", parsed_data)
+        existing_user = functionality.select_data("users", "username", data['username'])
+        if existing_user:
+            return jsonify({"message": "User already exists"}), 400
 
-    #return render_template('home.html')
-    return
+        # Format data as a string tuple
+        user_data = f"('{data['username']}', '{data['password']}')"
+        functionality.insert_row("users", "(username, password)", user_data)
 
+        return jsonify({"message": "User created successfully"}), 201
+
+    except Exception as e:
+        print("Signup Error:", e)
+        return jsonify({"message": "Internal server error"}), 500
 
 #format: .../user?username=bobby
 @app.route('/user')

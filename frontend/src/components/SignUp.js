@@ -1,23 +1,37 @@
 import React, { useState } from 'react';
-import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom'
-import './SignUp.css'; 
-import logo from '../dummy/icon.png'
+import { Link, useNavigate } from 'react-router-dom';
+import './SignUp.css';
+import logo from '../dummy/icon.png';
 
 const SignUp = () => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState(''); 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log('Name:', name, 'Email:', email, 'Password:', password);
-    // Add logic to handle sign-up here (e.g., sending data to a server)
+    try {
+      const response = await fetch('http://localhost:5000/signup', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: email, password }), 
+      });
+
+      if (response.ok) {
+        // Handle successful sign-up
+        navigate('/home'); 
+      } else {
+        // Handle sign-up failure
+        alert('Sign-up failed. Please try again.');
+      }
+    } catch (error) {
+      alert('An error occurred. Please try again later.');
+    }
   };
 
   const navigateToLogin = () => {
-    navigate('/login'); // Navigate to login page (replace with your login route)
+    navigate('/signup'); 
   };
 
   return (
