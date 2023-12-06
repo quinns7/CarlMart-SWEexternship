@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom'
 import './Home.css';
 import cactusImage from '../dummy/cactus.jpg';
 import calcImage from '../dummy/calc.jpg';
@@ -12,8 +13,38 @@ import { useNavigate } from "react-router-dom";
 const ListingModal = ({ listing, onClose }) => {
   if (!listing) return null;
 
+  // Handle outside click
+  const handleOutsideClick = (e) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  const NewListingModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <div className="modal-backdrop" onClick={onClose}>
+        <div className="modal" onClick={e => e.stopPropagation()}>
+          <div className="modal-content">
+            <h2>New Listing</h2>
+            <form>
+              {/* Form fields for new listing */}
+              <input type="text" placeholder="Title" />
+              <input type="number" placeholder="Price" />
+              <textarea placeholder="Description"></textarea>
+              <input type="text" placeholder="Contact Info" />
+            </form>
+            <button onClick={onClose}>Close</button>
+            <button type="submit">Submit</button>
+          </div>
+        </div>
+      </div>
+    );
+  };  
+
   return (
-    <div className="modal-backdrop">
+    <div className="modal-backdrop" onClick={handleOutsideClick}>
       <div className="modal">
         <h2>{listing[0]}</h2>
         <p>Price: ${listing[2]}</p>
@@ -40,20 +71,7 @@ function Home() {
   const categories = ['Books', 'Electronics', 'Apparel', 'Furniture', 'Toys'];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
-  const navigate = useNavigate();
-
-  const [data, setData] = useState([{}])
-
-  useEffect(() => {
-    fetch("/home").then(
-      res => res.json()
-    ).then(
-      data => {
-        setData(data)
-        console.log(data)
-      }
-    )
-  }, [])
+  const [isNewListingModalOpen, setIsNewListingModalOpen] = useState(false);
 
   // Function to open the modal with the listing details
   const openModal = (listing) => {
@@ -67,16 +85,30 @@ function Home() {
     setSelectedListing(null); // Also clear the selected listing
   };
 
-  const handleNavToNewListing = () => {
-    navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
+  const NewListingModal = ({ isOpen, onClose }) => {
+    if (!isOpen) return null;
+  
+    return (
+      <div className="modal-backdrop" onClick={onClose}>
+        <div className="modal" onClick={e => e.stopPropagation()}>
+          <button onClick={onClose}>Close</button>
+        </div>
+      </div>
+    );
   };
+  
+  const openNewListingModal = () => setIsNewListingModalOpen(true);
+  const closeNewListingModal = () => setIsNewListingModalOpen(false);
 
   return (
     <div className="home-container">
       <header className="header">
-        <div className="nav-logo">CarlMart</div>
+        <Link to ="/"> 
+          <div className="nav-logo">CarlMart</div>
+        </Link>
+        
+        <input type="text" placeholder="Search..." className="search-bar" />
 
-        {/* Categories Dropdown */}
         <div className="categories">
           <button onClick={() => setShowCategories(!showCategories)}>
             <div className="hamburger-icon">
@@ -94,15 +126,17 @@ function Home() {
             </div>
           )}
         </div>
-      
-        <input type="text" placeholder="Search..." className="search-bar" />
+    
         <div className="nav-buttons">
-          <button className="nav-item" onClick={handleNavToNewListing}>
-            <span role="img" aria-label="add">➕</span> New Listing
-          </button>
-          <button className="nav-item" onClick={() => console.log('Sign In clicked')}>
-            <span role="img" aria-label="person">👤</span> Sign In
-          </button>
+        <button className="nav-item" onClick={openNewListingModal}>
+          <span role="img" aria-label="add">+</span> New Listing
+        </button>
+        {isNewListingModalOpen && <NewListingModal 
+          isOpen={isNewListingModalOpen} onClose={closeNewListingModal} />}
+
+          <Link to ="/login">
+            <button className="nav-item" onClick={() => console.log('Sign In clicked')}> <span role="img" aria-label="person">👤</span> </button>
+          </Link>
         </div>
       </header>
 
@@ -128,7 +162,7 @@ function Home() {
       {isModalOpen && <ListingModal listing={selectedListing} onClose={closeModal} />}
 
       <footer className="footer">
-        <p>© {new Date().getFullYear()} CarlMart, Inc. All rights reserved.</p>
+        <p> {new Date().getFullYear()} CarlMart, Inc. <br /> All rights reserved.</p>
       </footer>
       
     </div>

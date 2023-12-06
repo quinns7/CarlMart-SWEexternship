@@ -14,44 +14,7 @@ const SignUp = () => {
     event.preventDefault();
     console.log('Name:', name, 'Email:', email, 'Password:', password);
     // Add logic to handle sign-up here (e.g., sending data to a server)
-
-    //const data = {
-      //"users": [
-        //  {
-          //    "name": "alan", 
-            //  "age": 23,
-           //   "username": "aturing"
-          //},
-         // {
-           //   "name": "john", 
-             // "age": 29,
-              //"username": "__john__"
-        //  }
-      //]
-    //S}
-
-    //Not functioning properly
-    try { fetch('/signup', {  // Enter your IP address here
-      method: 'POST', 
-      mode: 'cors', 
-      headers: {
-        'Content-Type': 'application/json'},
-        body: JSON.stringify({
-          name: name,
-          email: email,
-          password: password
-        })
-      })
-    }
-    
-    catch(error) {
-      console.error('Error sending data to the backend:', error);
-
-    }
-
-
   };
-
 
   const navigateToLogin = () => {
     navigate('/login'); // Navigate to login page (replace with your login route)
