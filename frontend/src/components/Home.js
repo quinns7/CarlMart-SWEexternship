@@ -1,5 +1,9 @@
+<<<<<<< HEAD
+import React, { useState, useEffect } from 'react';
+=======
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
+>>>>>>> frontend
 import './Home.css';
 import cactusImage from '../dummy/cactus.jpg';
 import calcImage from '../dummy/calc.jpg';
@@ -46,24 +50,23 @@ const ListingModal = ({ listing, onClose }) => {
   return (
     <div className="modal-backdrop" onClick={handleOutsideClick}>
       <div className="modal">
-        <h2>{listing[0]}</h2>
-        <p>Price: ${listing[2]}</p>
-        <p>Description: {listing[1]}</p>
-        <p>Contact: {listing[3]}</p>
-        <button onClick={onClose}>Close</button>
+        <button className="modal-close-button" onClick={onClose}>X</button>
+        <div className="modal-content">
+          <div className="modal-image-container">
+            <img src={listing.image} alt={listing.title} className="modal-image" />
+          </div>
+          <div className="modal-text">
+            <h2>{listing.title}</h2>
+            <p>Price: ${listing.price}</p>
+            <p>Description: {listing.description}</p>
+            <p>Contact: {listing.contact}</p>
+          </div>
+        </div>
       </div>
     </div>
   );
 };
 
-const imageMap = {
-  cactusImage: cactusImage,
-  calcImage: calcImage,
-  lampImage: lampImage,
-  switchImage: switchImage,
-  beanImage: beanImage,
-  padImage: padImage,
-};
 
 function Home() {
 
@@ -85,20 +88,9 @@ function Home() {
     setSelectedListing(null); // Also clear the selected listing
   };
 
-  const NewListingModal = ({ isOpen, onClose }) => {
-    if (!isOpen) return null;
-  
-    return (
-      <div className="modal-backdrop" onClick={onClose}>
-        <div className="modal" onClick={e => e.stopPropagation()}>
-          <button onClick={onClose}>Close</button>
-        </div>
-      </div>
-    );
+  const handleNavToNewListing = () => {
+    navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
   };
-  
-  const openNewListingModal = () => setIsNewListingModalOpen(true);
-  const closeNewListingModal = () => setIsNewListingModalOpen(false);
 
   return (
     <div className="home-container">
