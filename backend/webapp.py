@@ -2,18 +2,28 @@ from flask import Flask, jsonify, request
 import psycopg2
 import functionality
 from flask_cors import CORS  # Import CORS
+from dotenv import load_dotenv
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from datetime import datetime
+
 
 app = Flask(__name__)
 CORS(app)
 
+def initCloudinary():
+    load_dotenv()
+    return cloudinary.config(secure=True)
+
 @app.route('/')
 @app.route('/home')
 def homepage():
-    #return render_template('home.html')
     functionality.create_tables()
     functionality.create_data()
     listings = functionality.select_all_listings()
-    # return {"home": ["backend info 1", "backend info 2", "backend info 3"]}
+    global cloudinaryConfig
+    cloudinaryConfig = initCloudinary()
     return {"home": listings}
 
 
@@ -42,6 +52,25 @@ def post_item_listing():
             return jsonify({"message": "Json data received"})
         else:
             return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
+    return
+
+@app.route("/get-signature", methods=["GET"])
+def get_signature():
+    timestamp = round(datetime.utcnow().timestamp())
+    params = {'timestamp': timestamp}
+    signature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
+    return jsonify({'timestamp': timestamp, 'signature': signature})
+
+@app.route("/use-photos", methods=["POST"])
+def use_photos():
+    public_id = request.json.get('public_id')
+    version = request.json.get('version')
+    signature = request.json.get('signature')
+    params = { 'public_id': public_id, 'version': version }
+    expectedSignature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
+    if expectedSignature == signature:
+        print("public_id", public_id,flush=True)
+        pass
     return
 
 @app.route('/signup', methods=["POST"])

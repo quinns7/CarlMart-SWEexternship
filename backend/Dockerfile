@@ -10,6 +10,8 @@ RUN pip install flask
 RUN pip install psycopg2
 RUN pip install psycopg2
 RUN pip install flask-cors
+RUN pip3 install cloudinary
+RUN pip3 install python-dotenv
 
 EXPOSE 5555
 

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import './NewListing.css'; 
+// import { Cloudinary } from "@cloudinary/url-gen";
 
 function NewListing() {
   const [showCategories, setShowCategories] = useState(false);
@@ -11,7 +12,63 @@ function NewListing() {
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const navigate = useNavigate();
+  const api_key = "641958582168523"
+  const cloud_name = "dpsysttyv"
 
+
+  useEffect(() => {
+    const form = document.querySelector("#listings-form");
+
+    if (form) {
+      form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+  
+        // get signature. In reality you could store this in localstorage or some other cache mechanism, it's good for 1 hour
+        const signatureResponse = await fetch("/get-signature");
+        const signatureData = await signatureResponse.json();
+      
+        const data = new FormData()
+        data.append("file", document.querySelector("#file-field").files[0])
+        data.append("api_key", api_key)
+        data.append("signature", signatureData.data.signature)
+        data.append("timestamp", signatureData.data.timestamp)
+      
+        const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/${cloud_name}/auto/upload`, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+          onUploadProgress: function (e) {
+            console.log(e.loaded / e.total)
+          }
+        })
+        const cloudinaryData = await cloudinaryResponse.json();
+        console.log("Cloudinary Response:", cloudinaryData.data);
+      
+        // send the image info back to our server
+        const photoData = {
+          public_id: cloudinaryData.public_id,
+          version: cloudinaryData.version,
+          signature: cloudinaryData.signature
+        }
+      
+        const response = await fetch('/use-photos', {
+          method: 'POST',
+          mode: 'cors',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+          body: JSON.stringify({photoData}),
+        });
+    
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+    
+        // Handle the response as needed
+        const responseData = await response.json();
+        console.log('Backend Response:', responseData);
+      });
+    }
+  })
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
@@ -88,7 +145,7 @@ function NewListing() {
       <section className="create-new-listing">
         <h2>New Listing</h2>
         <div className="new-listing">
-          <form onSubmit={handleSubmit} className="login-form">
+          <form onSubmit={handleSubmit} id="listings-form">
             <label>
               Title:
               <input 
@@ -102,7 +159,7 @@ function NewListing() {
             <label>
               Image:
               <input 
-                type="text" 
+                type="file" 
                 placeholder="image" 
                 value={image}
                 onChange={(e) => setImage(e.target.value)}
