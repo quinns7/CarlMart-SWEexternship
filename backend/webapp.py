@@ -11,7 +11,6 @@ from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
-# cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000", "supports_credentials": True}})
 cloudinaryConfig = None
 
 def initCloudinary():
@@ -66,18 +65,6 @@ def get_signature():
     signature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
     print("signature= ", signature,flush=True)
     return jsonify({'timestamp': timestamp, 'signature': signature})
-
-# @app.route("/use-photos", methods=["POST"])
-# def use_photos():
-#     public_id = request.json.get('public_id')
-#     version = request.json.get('version')
-#     signature = request.json.get('signature')
-#     params = { 'public_id': public_id, 'version': version }
-#     expectedSignature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
-#     if expectedSignature == signature:
-#         print("public_id", public_id,flush=True)
-#         pass
-#     return
 
 @app.route('/signup', methods=["POST"])
 def create_user():

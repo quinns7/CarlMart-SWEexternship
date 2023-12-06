@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import './NewListing.css'; 
 import Axios from 'axios';
-// import { Cloudinary } from "@cloudinary/url-gen";
 
 function NewListing() {
   const [showCategories, setShowCategories] = useState(false);
@@ -14,7 +13,6 @@ function NewListing() {
   const [image, setImage] = useState('');
   const navigate = useNavigate();
   const api_key = "641958582168523"
-  const cloud_name = "dpsysttyv"
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -30,7 +28,6 @@ function NewListing() {
     data.append("signature", signatureData.signature);
     data.append("timestamp", signatureData.timestamp);
     const cloudinaryResponse = await Axios.post("https://api.cloudinary.com/v1_1/dpsysttyv/auto/upload", data, {
-      // headers: { "Content-Type": "multipart/form-data" },
       onUploadProgress: function (e) {
         console.log(e.loaded / e.total)
       }
@@ -38,21 +35,6 @@ function NewListing() {
     const cloudinaryData = cloudinaryResponse.data;
     console.log(cloudinaryData)
   
-    // const cloudinaryResponse = await fetch(`https://api.cloudinary.com/v1_1/dpsysttyv/image/upload`, data, {
-    //   // mode: 'cors',
-    //   // headers: { "Content-Type": "multipart/form-data" },
-    //   method: 'Post',
-    //   body: data
-    //   // onUploadProgress: function (e) {
-    //   //   console.log(e.loaded / e.total)
-    //   // }
-    // })
-    // const cloudinaryData = await cloudinaryResponse.json();
-    // console.log("Cloudinary Response:", cloudinaryData);
-
-
-  
-    // send the image info back to our server
     const photoData = {
       public_id: cloudinaryData.public_id,
       version: cloudinaryData.version,
@@ -148,7 +130,6 @@ function NewListing() {
               <input 
                 type="file" 
                 accept="image/*"
-                // value={image}
                 onChange={(e) => {
                   setImage(e.target.files[0])
                 }}
