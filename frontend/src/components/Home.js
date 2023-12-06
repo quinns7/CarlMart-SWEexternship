@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
-import cactusImage from '../dummy/cactus.jpg';
-import calcImage from '../dummy/calc.jpg';
-import lampImage from '../dummy/lamp.webp';
-import switchImage from '../dummy/nintendo.jpg'
-import beanImage from '../dummy/beanbag.jpg'
-import padImage from '../dummy/ipad.jpg'
+// import cactusImage from '../dummy/cactus.jpg';
+// import calcImage from '../dummy/calc.jpg';
+// import lampImage from '../dummy/lamp.webp';
+// import switchImage from '../dummy/nintendo.jpg'
+// import beanImage from '../dummy/beanbag.jpg'
+// import padImage from '../dummy/ipad.jpg'
 import { useNavigate } from "react-router-dom";
 
 
@@ -25,14 +25,14 @@ const ListingModal = ({ listing, onClose }) => {
   );
 };
 
-const imageMap = {
-  cactusImage: cactusImage,
-  calcImage: calcImage,
-  lampImage: lampImage,
-  switchImage: switchImage,
-  beanImage: beanImage,
-  padImage: padImage,
-};
+// const imageMap = {
+//   cactusImage: cactusImage,
+//   calcImage: calcImage,
+//   lampImage: lampImage,
+//   switchImage: switchImage,
+//   beanImage: beanImage,
+//   padImage: padImage,
+// };
 
 function Home() {
 
@@ -114,7 +114,7 @@ function Home() {
             <p>Loading...</p>
           ) : (data.home.map((unit, i) => (
             <div key={i} className="listing-card" onClick={() => openModal(unit)}>
-              <img src={imageMap[unit[4]]} alt={unit[0]} className="listing-image" />
+              <img src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${unit[4]}.jpg`} alt={unit[0]} className="listing-image" />
               <div className="listing-details">
                 <h3 className="listing-title">{unit[0]}</h3>
                 <p className="listing-price">${unit[2]}</p>

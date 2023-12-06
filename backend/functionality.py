@@ -1,5 +1,8 @@
 import psycopg2
 from datetime import datetime
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 DB_NAME = "carlmart"
 DB_USER = "postgres"
@@ -60,12 +63,12 @@ def create_tables():
 
 #inserting some data into the database if it doesn't already exist
 def create_data():
-    query = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu', 'calcImage'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
-    query1 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu', 'lampImage' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
-    query2 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'nwikeb1201231500', 'Cactus', 'Cute little cactus', 5, 'nwikeb@carleton.edu', 'cactusImage' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'nwikeb1201231500')"    
-    query3 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112230950', 'Nintendo Switch', 'used switch good condition', 45, 'quinns@carleton.edu', 'switchImage'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
-    query4 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112231000', 'Beanbag chair', 'black beanbag chair medium size', 30, 'quinns@carleton.edu', 'beanImage'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231000')"
-    query5 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112231010', 'Ipad', 'like new ipad 10 in.', 800, 'quinns@carleton.edu', 'padImage'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231010')"
+    query = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu', 'carlmart/calc_lebbeq'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
+    query1 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu', 'carlmart/lamp_dtrcpw' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
+    query2 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'nwikeb1201231500', 'Cactus', 'Cute little cactus', 5, 'nwikeb@carleton.edu', 'carlmart/cactus_tjedp7' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'nwikeb1201231500')"    
+    query3 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112230950', 'Nintendo Switch', 'used switch good condition', 45, 'quinns@carleton.edu', 'carlmart/nintendo_byntfb'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
+    query4 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112231000', 'Beanbag chair', 'black beanbag chair medium size', 30, 'quinns@carleton.edu', 'carlmart/beanbag_w6pryd'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231000')"
+    query5 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112231010', 'Ipad', 'like new ipad 10 in.', 800, 'quinns@carleton.edu', 'carlmart/ipad_oljnha'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231010')"
 
     queries = [query, query1, query2, query3, query4, query5]
     cur, conn = connect()
@@ -141,11 +144,16 @@ def delete_data(table, column, id):
     return result
 
 #TODO make listing id connect to signed-in username
-def create_new_listing(data):
+def create_new_listing(data, cloudinaryConfig):
     data_list = []
     columns = "("
     for key in data:
-            if data[key] != '':
+            if key == 'image':
+                validation = validateSignature(data['image'], cloudinaryConfig)
+                if validation:
+                    data_list.append(validation)
+                    columns += key + ", "
+            elif data[key] != '':
                 data_list.append(data[key])
                 columns += key + ", "
     columns += "listing)"
@@ -153,6 +161,18 @@ def create_new_listing(data):
     data_list.append(listing_id)
     parsed_data = str(tuple(data_list))
     return columns, parsed_data
+
+def validateSignature(photoData, cloudinaryConfig):
+    print("photodata: ", photoData, flush=True)
+    public_id = photoData['public_id']
+    version = photoData['version']
+    signature = photoData['signature']
+    params = { 'public_id': public_id, 'version': version }
+    expectedSignature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
+    if expectedSignature == signature:
+        print("public_id", public_id,flush=True)
+        return public_id
+    return False
 
 def create_listing_id(username):
     now = datetime.now()

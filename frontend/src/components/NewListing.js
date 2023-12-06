@@ -1,19 +1,45 @@
 import React, { useState } from 'react';
 import { useNavigate } from "react-router-dom";
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 import './NewListing.css'; 
+import Axios from 'axios';
 
 function NewListing() {
   const [showCategories, setShowCategories] = useState(false);
   const categories = ['Books', 'Electronics', 'Apparel', 'Furniture', 'Toys'];
   const [title, setTitle] = useState('');
-  const [image, setImage] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
+  const [image, setImage] = useState('');
   const navigate = useNavigate();
+  const api_key = "641958582168523"
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+
+    const signatureResponse = await fetch("/get-signature");
+    const signatureData = await signatureResponse.json();
+    console.log("Signature Response:", signatureData);
+  
+    const data = new FormData();
+    data.append("file", image);
+    data.append("upload_preset", "jqajmneh");
+    data.append("api_key", api_key);
+    data.append("signature", signatureData.signature);
+    data.append("timestamp", signatureData.timestamp);
+    const cloudinaryResponse = await Axios.post("https://api.cloudinary.com/v1_1/dpsysttyv/auto/upload", data, {
+      onUploadProgress: function (e) {
+        console.log(e.loaded / e.total)
+      }
+    })
+    const cloudinaryData = cloudinaryResponse.data;
+    console.log(cloudinaryData)
+  
+    const photoData = {
+      public_id: cloudinaryData.public_id,
+      version: cloudinaryData.version,
+      signature: cloudinaryData.signature
+    }
     try {
       // Send a POST request to your Flask backend using fetch
       const response = await fetch('/new-listing', {
@@ -25,9 +51,9 @@ function NewListing() {
         credentials: 'include',
         body: JSON.stringify({
           title: title,
-          image: image,
           description: description,
-          price: price
+          price: price,
+          image: photoData
         }),
       });
 
@@ -88,7 +114,7 @@ function NewListing() {
       <section className="create-new-listing">
         <h2>New Listing</h2>
         <div className="new-listing">
-          <form onSubmit={handleSubmit} className="login-form">
+          <form onSubmit={handleSubmit} id="listings-form">
             <label>
               Title:
               <input 
@@ -102,10 +128,11 @@ function NewListing() {
             <label>
               Image:
               <input 
-                type="text" 
-                placeholder="image" 
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
+                type="file" 
+                accept="image/*"
+                onChange={(e) => {
+                  setImage(e.target.files[0])
+                }}
               />
             </label>
             <label>
