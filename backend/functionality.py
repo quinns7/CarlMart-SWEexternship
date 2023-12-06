@@ -1,5 +1,8 @@
 import psycopg2
 from datetime import datetime
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
 
 DB_NAME = "carlmart"
 DB_USER = "postgres"
@@ -141,11 +144,16 @@ def delete_data(table, column, id):
     return result
 
 #TODO make listing id connect to signed-in username
-def create_new_listing(data):
+def create_new_listing(data, cloudinaryConfig):
     data_list = []
     columns = "("
     for key in data:
-            if data[key] != '':
+            if key == 'image':
+                validation = validateSignature(data['image'], cloudinaryConfig)
+                if validation:
+                    data_list.append(validation)
+                    columns += key + ", "
+            elif data[key] != '':
                 data_list.append(data[key])
                 columns += key + ", "
     columns += "listing)"
@@ -153,6 +161,18 @@ def create_new_listing(data):
     data_list.append(listing_id)
     parsed_data = str(tuple(data_list))
     return columns, parsed_data
+
+def validateSignature(photoData, cloudinaryConfig):
+    print("photodata: ", photoData, flush=True)
+    public_id = photoData['public_id']
+    version = photoData['version']
+    signature = photoData['signature']
+    params = { 'public_id': public_id, 'version': version }
+    expectedSignature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
+    if expectedSignature == signature:
+        print("public_id", public_id,flush=True)
+        return public_id
+    return False
 
 def create_listing_id(username):
     now = datetime.now()

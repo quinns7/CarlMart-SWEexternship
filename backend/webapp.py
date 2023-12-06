@@ -11,10 +11,14 @@ from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)
+# cors = CORS(app, resources={r"/api/*": {"origins": "http://localhost:3000", "supports_credentials": True}})
+cloudinaryConfig = None
 
 def initCloudinary():
     load_dotenv()
     return cloudinary.config(secure=True)
+
+cloudinaryConfig = initCloudinary()
 
 @app.route('/')
 @app.route('/home')
@@ -22,8 +26,6 @@ def homepage():
     functionality.create_tables()
     functionality.create_data()
     listings = functionality.select_all_listings()
-    global cloudinaryConfig
-    cloudinaryConfig = initCloudinary()
     return {"home": listings}
 
 
@@ -47,7 +49,7 @@ def post_item_listing():
     if request.method == "POST":
         data = request.get_json()
         if data is not None:
-            columns, parsed_data = functionality.create_new_listing(data)
+            columns, parsed_data = functionality.create_new_listing(data, cloudinaryConfig)
             functionality.insert_row("listings", columns, parsed_data)
             return jsonify({"message": "Json data received"})
         else:
@@ -56,22 +58,26 @@ def post_item_listing():
 
 @app.route("/get-signature", methods=["GET"])
 def get_signature():
+    if cloudinaryConfig is None:
+        return jsonify({"error": "Cloudinary configuration not initialized"}), 500
+    upload_preset = "jqajmneh"
     timestamp = round(datetime.utcnow().timestamp())
-    params = {'timestamp': timestamp}
+    params = {'timestamp': timestamp, 'upload_preset': upload_preset}
     signature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
+    print("signature= ", signature,flush=True)
     return jsonify({'timestamp': timestamp, 'signature': signature})
 
-@app.route("/use-photos", methods=["POST"])
-def use_photos():
-    public_id = request.json.get('public_id')
-    version = request.json.get('version')
-    signature = request.json.get('signature')
-    params = { 'public_id': public_id, 'version': version }
-    expectedSignature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
-    if expectedSignature == signature:
-        print("public_id", public_id,flush=True)
-        pass
-    return
+# @app.route("/use-photos", methods=["POST"])
+# def use_photos():
+#     public_id = request.json.get('public_id')
+#     version = request.json.get('version')
+#     signature = request.json.get('signature')
+#     params = { 'public_id': public_id, 'version': version }
+#     expectedSignature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
+#     if expectedSignature == signature:
+#         print("public_id", public_id,flush=True)
+#         pass
+#     return
 
 @app.route('/signup', methods=["POST"])
 def create_user():

@@ -2,6 +2,7 @@ FROM python:3.9.12
 
 WORKDIR /app
 
+COPY .env /app/.env
 COPY . .
 
 # RUN pip install --upgrade pip
