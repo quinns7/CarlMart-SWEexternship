@@ -119,12 +119,12 @@ function NewListing() {
       <section className="create-new-listing">
         <h2>New Listing</h2>
         <div className="new-listing">
-          <form onSubmit={handleSubmit} id="listings-form">
+          <form onSubmit={handleSubmit} class="listings-form">
             <label>
               Title:
               <input 
                 type="text" 
-                placeholder="Black Desk Lamp" 
+                placeholder="ex: Black Desk Lamp" 
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
                 required
@@ -143,8 +143,9 @@ function NewListing() {
             <label>
               Description:
               <input 
+                id= "description"
                 type="text" 
-                placeholder="example: small black desk lamp in good condition. 5 foot cord" 
+                placeholder="ex: small black desk lamp in good condition. 5 foot cord" 
                 value={description}
                 onChange={(e) => setDescription(e.target.value)}
               />
@@ -153,13 +154,13 @@ function NewListing() {
               Price:
               <input
                 type="number"
-                placeholder="25"
+                placeholder="ex: 25"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
                 required
               />
             </label>
-            <button type="submit">Post Listing</button>
+            <button type="submit" id="postButton">Post Listing</button>
           </form>
           
 
