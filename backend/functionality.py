@@ -50,9 +50,12 @@ def create_tables():
         CREATE TABLE IF NOT EXISTS 
             users( 
                 username varchar(50) PRIMARY KEY,
+                email varchar(255) UNIQUE,
                 password varchar(255), 
+                firstname varchar(50),
+                lastname varchar(50),
                 listings text,
-                rating real
+                ratings real
             );
         """)
 
@@ -65,12 +68,12 @@ def create_tables():
 
 #inserting some data into the database if it doesn't already exist
 def create_data():
-    query = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu', 'calcImage'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
-    query1 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu', 'lampImage' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
-    query2 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'nwikeb1201231500', 'Cactus', 'Cute little cactus', 5, 'nwikeb@carleton.edu', 'cactusImage' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'nwikeb1201231500')"    
-    query3 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112230950', 'Nintendo Switch', 'used switch good condition', 45, 'quinns@carleton.edu', 'switchImage'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
-    query4 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112231000', 'Beanbag chair', 'black beanbag chair medium size', 30, 'quinns@carleton.edu', 'beanImage'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231000')"
-    query5 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112231010', 'Ipad', 'like new ipad 10 in.', 800, 'quinns@carleton.edu', 'padImage'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231010')"
+    query = "INSERT INTO listings (listing, title, description, price, contact, image) VALUES ('laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu', 'calcImage') ON CONFLICT DO NOTHING;"
+    query1 = "INSERT INTO listings (listing, title, description, price, contact, image) VALUES ('moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu', 'lampImage') ON CONFLICT DO NOTHING;"
+    query2 = "INSERT INTO listings (listing, title, description, price, contact, image) VALUES ('nwikeb1201231500', 'Cactus', 'Cute little cactus', 5, 'nwikeb@carleton.edu', 'cactusImage') ON CONFLICT DO NOTHING;"
+    query3 = "INSERT INTO listings (listing, title, description, price, contact, image) VALUES ('quinns0112230950', 'Nintendo Switch', 'used switch good condition', 45, 'quinns@carleton.edu', 'switchImage') ON CONFLICT DO NOTHING;"
+    query4 = "INSERT INTO listings (listing, title, description, price, contact, image) VALUES ('quinns0112231000', 'Beanbag chair', 'black beanbag chair medium size', 30, 'quinns@carleton.edu', 'beanImage') ON CONFLICT DO NOTHING;"
+    query5 = "INSERT INTO listings (listing, title, description, price, contact, image) VALUES ('quinns0112231010', 'Ipad', 'like new ipad 10 in.', 800, 'quinns@carleton.edu', 'padImage') ON CONFLICT DO NOTHING;"
 
     queries = [query, query1, query2, query3, query4, query5]
     cur, conn = connect()
@@ -100,6 +103,7 @@ def select_data(table, column, id):
     query = f"SELECT * FROM {table} WHERE {column} = '{id}';"
     cur.execute(query)
     result = cur.fetchall()
+    print("Fetched user data:", result) 
     cur.close()
     conn.close()
     return result

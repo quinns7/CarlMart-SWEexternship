@@ -5,6 +5,7 @@ import Home from './components/Home';
 import LogIn from './components/LogIn'; 
 import SignUp from './components/SignUp'; 
 // import NewListing from './components/NewListing'; 
+import UserProfile from './components/UserProfile'; 
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -15,6 +16,7 @@ root.render(
       <Route path="/home" element={<Home />} />
       <Route path="/login" element={<LogIn />} />
       <Route path="/signup" element={<SignUp />} />
+      <Route path="/profile/:username" element={<UserProfile />} />
       {/* <Route path="/newlisting" element={<NewListing />} /> */}
     </Routes>
   </Router>

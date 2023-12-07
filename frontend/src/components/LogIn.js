@@ -4,7 +4,7 @@ import './LogIn.css';
 import logo from '../dummy/icon.png';
 
 const LogIn = () => {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState(''); 
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
@@ -14,12 +14,12 @@ const LogIn = () => {
       const response = await fetch('http://localhost:5000/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: email, password }), 
+        body: JSON.stringify({ username, password }),
       });
-
+  
       if (response.ok) {
         // Handle successful login
-        navigate('/home'); 
+        navigate(`/profile/${username}`);
       } else {
         // Handle login failure
         alert('Login failed. Please check your credentials.');
@@ -28,7 +28,8 @@ const LogIn = () => {
       alert('An error occurred. Please try again later.');
     }
   };
-
+  
+  
   const handleNavigateToSignUp = () => {
     navigate('/signup'); 
   };
@@ -39,10 +40,10 @@ const LogIn = () => {
       <Link to ="/"> <img src={logo} alt="logo" className="login-logo" /> </Link>
       <form onSubmit={handleSubmit} className="login-form">
         <input 
-          type="email" 
-          placeholder="Email" 
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          type="text" 
+          placeholder="Username" 
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           required
         />
         <input 
