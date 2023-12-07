@@ -7,41 +7,46 @@ import Select from "react-select";
 
 function NewListing() {
   const [showCategories, setShowCategories] = useState(false);
-  const categories = [{value: 'books', label: 'Books'}, {value: 'electronics', label: 'Electronics'}, {value: 'apparel', label: 'Apparel'}, {value: 'furniture', label:'Furniture'}, {value: 'toys', label: 'Toys'}];
+  const categories = [{value: 'books', label: 'Books'}, {value: 'electronics', label: 'Electronics'}, {value: 'clothing', label: 'Clothing'}, {value: 'furniture', label:'Furniture'}, {value: 'plants', label: 'Plants'}, {value: 'transportation', label: 'Transporation'}, {value: 'other', label: 'Other'}];
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [price, setPrice] = useState('');
   const [image, setImage] = useState('');
+  const [category, setCategory] = useState('');
+  const [condition, setCondition] = useState('');
+  const [contact, setContact] = useState('');
   const navigate = useNavigate();
   const api_key = "641958582168523"
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    const signatureResponse = await fetch("/get-signature");
-    const signatureData = await signatureResponse.json();
-    console.log("Signature Response:", signatureData);
-  
-    const data = new FormData();
-    data.append("file", image);
-    data.append("upload_preset", "jqajmneh");
-    data.append("api_key", api_key);
-    data.append("signature", signatureData.signature);
-    data.append("timestamp", signatureData.timestamp);
-    const cloudinaryResponse = await Axios.post("https://api.cloudinary.com/v1_1/dpsysttyv/auto/upload", data, {
-      onUploadProgress: function (e) {
-        console.log(e.loaded / e.total)
-      }
-    })
-    const cloudinaryData = cloudinaryResponse.data;
-    console.log(cloudinaryData)
-  
-    const photoData = {
-      public_id: cloudinaryData.public_id,
-      version: cloudinaryData.version,
-      signature: cloudinaryData.signature
-    }
     try {
+      let photoData = null
+      if (image) {
+        const signatureResponse = await fetch("/get-signature");
+        const signatureData = await signatureResponse.json();
+        console.log("Signature Response:", signatureData);
+      
+        const data = new FormData();
+        data.append("file", image);
+        data.append("upload_preset", "jqajmneh");
+        data.append("api_key", api_key);
+        data.append("signature", signatureData.signature);
+        data.append("timestamp", signatureData.timestamp);
+        const cloudinaryResponse = await Axios.post("https://api.cloudinary.com/v1_1/dpsysttyv/auto/upload", data, {
+          onUploadProgress: function (e) {
+            console.log(e.loaded / e.total)
+          }
+        })
+        const cloudinaryData = cloudinaryResponse.data;
+        console.log(cloudinaryData)
+      
+        photoData = {
+          public_id: cloudinaryData.public_id,
+          version: cloudinaryData.version,
+          signature: cloudinaryData.signature
+        }
+      }
       // Send a POST request to your Flask backend using fetch
       const response = await fetch('/new-listing', {
         method: 'POST',
@@ -54,7 +59,10 @@ function NewListing() {
           title: title,
           description: description,
           price: price,
-          image: photoData
+          image: photoData,
+          category: category,
+          condition: condition,
+          contact: contact
         }),
       });
 
@@ -157,6 +165,44 @@ function NewListing() {
                 placeholder="ex: 25"
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+                required
+              />
+            </label>
+            <label>
+              Category:
+              <select
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                required
+              >
+                <option value="">Select a category</option>
+                <option value="electronics">Electronics</option>
+                <option value="furniture">Furniture</option>
+                <option value="clothing">Clothing</option>
+                <option value="textbooks">Books</option>
+                <option value="plants">Plants</option>
+                <option value="transportation">Transportation</option>
+                <option value="other">Other</option>
+              </select>
+            </label>
+            <label>
+              Condition:
+              <select
+                value={condition}
+                onChange={(e) => setCondition(e.target.value)}
+              >
+                <option value="">Select a category</option>
+                <option value="used">Used</option>
+                <option value="new">New</option>
+              </select>
+            </label>
+            <label>
+              Contact Info:
+              <input
+                type="text"
+                placeholder="ex: doej@carleton.edu"
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
                 required
               />
             </label>

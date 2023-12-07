@@ -41,7 +41,9 @@ def create_tables():
                 price int,
                 contact varchar(50),
                 image text,
-                tags text
+                category text,
+                condition text,
+                timestamp timestamp
             );
         """)
 
@@ -116,9 +118,9 @@ def insert_row(table, columns, data):
 
 #returns the title, description, price, contact, and image for all listings in the listings datatable
 #returns a list of tuples
-def select_all_listings():
+def select_all_listings(sort):
     cur, conn = connect()
-    query = 'SELECT title, description, price, contact, image FROM "listings";'
+    query = 'SELECT title, description, price, contact, image FROM "listings"' + sort
     result = "no result yet"
     try:
         cur.execute(query) 
@@ -128,6 +130,15 @@ def select_all_listings():
     cur.close()
     conn.close()
     return result
+
+def sort_by_price_low_to_high():
+    return "ORDER BY price ASC"
+def sort_by_price_high_to_low():
+    return "ORDER BY price DESC"
+def sort_by_date_newest():
+    return "ORDER BY timestamp DESC"
+def sort_by_date_oldest():
+    return "ORDER BY price ASC"
 
 def delete_data(table, column, id):
     cur, conn = connect()
@@ -148,17 +159,17 @@ def create_new_listing(data, cloudinaryConfig):
     data_list = []
     columns = "("
     for key in data:
-            if key == 'image':
-                validation = validateSignature(data['image'], cloudinaryConfig)
-                if validation:
-                    data_list.append(validation)
-                    columns += key + ", "
-            elif data[key] != '':
-                data_list.append(data[key])
+        if key == 'image' and data[key] is not None:
+            validation = validateSignature(data['image'], cloudinaryConfig)
+            if validation:
+                data_list.append(validation)
                 columns += key + ", "
-    columns += "listing)"
-    listing_id = create_listing_id("quinns")
-    data_list.append(listing_id)
+        elif data[key] != '' and data[key] is not None:
+            data_list.append(data[key])
+            columns += key + ", "
+    columns += "listing, timestamp)"
+    listing_id, now = create_listing_id("quinns")
+    data_list.append(listing_id, now)
     parsed_data = str(tuple(data_list))
     return columns, parsed_data
 
@@ -174,11 +185,12 @@ def validateSignature(photoData, cloudinaryConfig):
         return public_id
     return False
 
+#creates listing id and timestamp
 def create_listing_id(username):
     now = datetime.now()
     dt_string = now.strftime("%m%d%Y%H%M%S")
     listing_id = username + dt_string
-    return listing_id
+    return listing_id, now
 
 if __name__ == "__main__":
     connect()
