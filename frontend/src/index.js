@@ -6,6 +6,7 @@ import LogIn from './components/LogIn';
 import NewListing from'./components/NewListing';
 import SignUp from './components/SignUp'; 
 import AboutUs from './components/AboutUs';
+import Search from './components/Search'; 
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
@@ -18,6 +19,7 @@ root.render(
       <Route path="/new-listing" element={<NewListing />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/about-us" element={<AboutUs />} />
+      <Route path="/search" element={<Search />} />
     </Routes>
   </Router>
 );
