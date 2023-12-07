@@ -71,6 +71,10 @@ function Home() {
     navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
   };
 
+  const handleNavigateToAboutUs = () => {
+    navigate('/about-us'); // Replace '/signup' with your actual sign-up route
+  };
+
   return (
     <div className="home-container">
       <header className="header">
@@ -128,6 +132,7 @@ function Home() {
       {isModalOpen && <ListingModal listing={selectedListing} onClose={closeModal} />}
 
       <footer className="footer">
+        <div className="about-us"><button className="about-us-link" onClick={handleNavigateToAboutUs}>About Us</button></div>
         <p>© {new Date().getFullYear()} CarlMart, Inc. All rights reserved.</p>
       </footer>
       
