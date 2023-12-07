@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Home from './components/Home';
 import LogIn from './components/LogIn'; 
 import SignUp from './components/SignUp'; 
-// import NewListing from './components/NewListing'; 
+import NewListing from './components/NewListing'; 
 import UserProfile from './components/UserProfile'; 
 import reportWebVitals from './reportWebVitals';
 
@@ -17,7 +17,7 @@ root.render(
       <Route path="/login" element={<LogIn />} />
       <Route path="/signup" element={<SignUp />} />
       <Route path="/profile/:username" element={<UserProfile />} />
-      {/* <Route path="/newlisting" element={<NewListing />} /> */}
+      <Route path="/newlisting" element={<NewListing />} />
     </Routes>
   </Router>
 );
