@@ -2,18 +2,29 @@ from flask import Flask, jsonify, request
 import psycopg2
 import functionality
 from flask_cors import CORS  # Import CORS
+from dotenv import load_dotenv
+import cloudinary
+import cloudinary.uploader
+import cloudinary.api
+from datetime import datetime
+
 
 app = Flask(__name__)
 CORS(app)
+cloudinaryConfig = None
+
+def initCloudinary():
+    load_dotenv()
+    return cloudinary.config(secure=True)
+
+cloudinaryConfig = initCloudinary()
 
 @app.route('/')
 @app.route('/home')
 def homepage():
-    #return render_template('home.html')
     functionality.create_tables()
     functionality.create_data()
     listings = functionality.select_all_listings()
-    # return {"home": ["backend info 1", "backend info 2", "backend info 3"]}
     return {"home": listings}
 
 
@@ -37,12 +48,23 @@ def post_item_listing():
     if request.method == "POST":
         data = request.get_json()
         if data is not None:
-            columns, parsed_data = functionality.create_new_listing(data)
+            columns, parsed_data = functionality.create_new_listing(data, cloudinaryConfig)
             functionality.insert_row("listings", columns, parsed_data)
             return jsonify({"message": "Json data received"})
         else:
             return jsonify({"message": "No Json data received"})  # Return a bad request status if no JSON data found. 400
     return
+
+@app.route("/get-signature", methods=["GET"])
+def get_signature():
+    if cloudinaryConfig is None:
+        return jsonify({"error": "Cloudinary configuration not initialized"}), 500
+    upload_preset = "jqajmneh"
+    timestamp = round(datetime.utcnow().timestamp())
+    params = {'timestamp': timestamp, 'upload_preset': upload_preset}
+    signature = cloudinary.utils.api_sign_request(params, cloudinaryConfig.api_secret)
+    print("signature= ", signature,flush=True)
+    return jsonify({'timestamp': timestamp, 'signature': signature})
 
 @app.route('/signup', methods=["POST"])
 def create_user():
