@@ -121,14 +121,63 @@ html, body {
   padding-left: 20px; 
   padding-top: 40px;
   margin: 0; 
-  font-size: 25px;
+  font-size: 30px;
   color: #333; 
   font-family: 'Raleway',sans-serif;
 }
 
-.new-listing {
+.listings-form {
   position: relative;
-  margin: 20px;
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem; 
+}
+
+.listings-form label {
+  font-family: 'Inter';
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.listings-form input {
+  color: #000;
+  text-align: center;
+  font-family: 'Inter';
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 10px 15px;
+  margin-bottom: 1rem; 
+  font-size: 15px;
+  color: #333; 
+  border-radius: 12px;
+}
+
+#description {
+  width: 500px;
+  height: 200px;
+}
+
+.listings-form input::placeholder {
+  color: #888; 
+  opacity: 1; 
+}
+
+#postButton {
+  font-family: 'Inter';
+  padding: 10px;
+  margin-bottom: 1rem; 
+  border: 1px solid #003365;
+  font-size: 24px;
+  border-radius: 12px;
+  background: #003365;
+  color: white;
+  font-style: normal;
+  font-weight: 400;
 }
 
 .footer {
