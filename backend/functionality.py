@@ -169,7 +169,9 @@ def create_new_listing(data, cloudinaryConfig):
             columns += key + ", "
     columns += "listing, timestamp)"
     listing_id, now = create_listing_id("quinns")
-    data_list.append(listing_id, now)
+    data_list.append(listing_id)
+    # data_list.append(now)
+    data_list.append(now.strftime("%Y-%m-%d %H:%M:%S"))
     parsed_data = str(tuple(data_list))
     return columns, parsed_data
 
