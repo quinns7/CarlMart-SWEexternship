@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import './Home.css';
 import Select from "react-select";
+// import cactusImage from '../dummy/cactus.jpg';
+// import calcImage from '../dummy/calc.jpg';
+// import lampImage from '../dummy/lamp.webp';
+// import switchImage from '../dummy/nintendo.jpg'
+// import beanImage from '../dummy/beanbag.jpg'
+// import padImage from '../dummy/ipad.jpg'
 import { useNavigate } from "react-router-dom";
 // import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
@@ -25,7 +31,7 @@ const ListingModal = ({ listing, onClose }) => {
 
 function Home() {
 
-  const [showCategories, setShowCategories] = useState('');
+  const [showCategories, setShowCategories] = useState(false);
   const categories = [{value: 'books', label: 'Books'}, {value: 'electronics', label: 'Electronics'}, {value: 'clothing', label: 'Clothing'}, {value: 'furniture', label:'Furniture'}, {value: 'plants', label: 'Plants'}, {value: 'transportation', label: 'Transporation'}, {value: 'other', label: 'Other'}];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
@@ -35,7 +41,7 @@ function Home() {
 
 
   useEffect(() => {
-    fetch("/home").then(
+    fetch("/categories").then(
       res => res.json()
     ).then(
       data => {
@@ -112,43 +118,43 @@ function Home() {
   const handleCategories = async () => {
 
     // Sort the listings
-    console.log("categories: ", showCategories)
-    const sortResponse = await fetch('/categories', {
+    console.log(sort)
+    const sortResponse = await fetch('/sort', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       credentials: 'include',
       body: JSON.stringify({
-        categories: showCategories,
+        sort: sort,
       }),
     });
 
     if (!sortResponse.ok) {
       throw new Error('Error sorting listings');
     }
-    // const sortData = await sortResponse.json();
+    const sortData = await sortResponse.json();
 
-    // // Reload the home page with the sorted listings
-    // const homeResponse = await fetch('/home', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   credentials: 'include',
-    //   body: JSON.stringify({
-    //     sort: sortData['sort'],
-    //   }),
-    // });
+    // Reload the home page with the sorted listings
+    const homeResponse = await fetch('/home', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      credentials: 'include',
+      body: JSON.stringify({
+        sort: sortData['sort'],
+      }),
+    });
 
-    // if (!homeResponse.ok) {
-    //   throw new Error('Error fetching home page data');
-    // }
+    if (!homeResponse.ok) {
+      throw new Error('Error fetching home page data');
+    }
 
-    // // Handle the response as needed
-    // const homeData = await homeResponse.json();
-    // setData(homeData);
-    // console.log('Home Page Response:', homeData);
+    // Handle the response as needed
+    const homeData = await homeResponse.json();
+    setData(homeData);
+    console.log('Home Page Response:', homeData);
   };  
 
   useEffect(() => {
@@ -163,10 +169,10 @@ function Home() {
   useEffect(() => {
     // This useEffect will run whenever the 'sort' state changes
     console.log('Updated categories:', showCategories);
-    if (showCategories) {
+    if (sort !== '') {
       handleCategories();
     }
-  }, [showCategories]);
+  }, [setShowCategories]);
 
   return (
     <div className="home-container">
@@ -179,7 +185,7 @@ function Home() {
           isMulti={true}
           options={categories}
           placeholder="Select Categories..." 
-          onChange={() => setShowCategories(!showCategories)}>
+          onClick={() => setShowCategories(!showCategories)}>
             <div className="hamburger-icon">
               <div></div>
               <div></div>
@@ -224,9 +230,9 @@ function Home() {
         </div>
         <div className="new-listings-grid">
           
-          {(typeof data.home === 'undefined') ? (
+          {(typeof data.listings === 'undefined') ? (
             <p>Loading...</p>
-          ) : (data.home.map((unit, i) => (
+          ) : (data.listings.map((unit, i) => (
             <div key={i} className="listing-card" onClick={() => openModal(unit)}>
               <img src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${unit[4]}.jpg`} alt={unit[0]} className="listing-image" />
               <div className="listing-details">

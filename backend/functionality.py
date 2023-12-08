@@ -131,14 +131,17 @@ def select_all_listings(sort):
     conn.close()
     return result
 
-def sort_by_price_low_to_high():
-    return "ORDER BY price ASC"
-def sort_by_price_high_to_low():
-    return "ORDER BY price DESC"
-def sort_by_date_newest():
-    return "ORDER BY timestamp DESC"
-def sort_by_date_oldest():
-    return "ORDER BY price ASC"
+def sort_options(sort):
+    sort_query = ''
+    if sort == 'price-asc':
+        sort_query = "ORDER BY price ASC"
+    elif sort == 'price-desc':
+        sort_query = "ORDER BY price DESC"
+    elif sort == 'date-asc':
+        sort_query = "ORDER BY timestamp DESC"
+    elif sort == 'date-desc':
+        sort_query = "ORDER BY price ASC"
+    return sort_query
 
 def delete_data(table, column, id):
     cur, conn = connect()

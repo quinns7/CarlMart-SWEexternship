@@ -31,7 +31,6 @@ def homepage():
             sort_query = data['sort']
             print("This is the sort in home endpoint: ", data['sort'], flush=True)
     listings = functionality.select_all_listings(sort_query)
-    print("listings: ", listings,flush=True)
     return {"home": listings}
 
 @app.route('/sort', methods=["POST"])
@@ -42,16 +41,17 @@ def sort():
         if data is not None:
             print("This is the sort in sort endpoint: ", data['sort'], flush=True)
             sort = data['sort']
-            if sort == 'price-asc':
-                sort_query = functionality.sort_by_price_low_to_high()
-            elif sort == 'price-desc':
-                sort_query = functionality.sort_by_price_high_to_low()
-            elif sort == 'date-asc':
-                sort_query = functionality.sort_by_date_oldest()
-            elif sort == 'date-desc':
-                sort_query = functionality.sort_by_date_newest()
+            sort_query = functionality.sort_options(sort)
     return {"sort": sort_query}
 
+@app.route('/categories', methods=["POST"])
+def categories():
+    if request.method == "POST":
+        data = request.get_json(silent=True)
+        if data is not None:
+            for key in data['categories']:
+                listings = functionality.select_data("listings", "category", key)
+    return {"listings": listings}
 
 @app.route('/login', methods=["POST"])
 def login():
