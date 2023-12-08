@@ -96,7 +96,7 @@ def select_query(table, column):
 #Returns a list of tuples
 def select_data(table, column, id):
     cur, conn = connect()
-    query = 'SELECT * FROM ' + table + " WHERE " + column + " LIKE '%" + id + "%';" 
+    query = 'SELECT * FROM ' + table + " WHERE " + column + " ILIKE '%" + id + "%';"        
     cur.execute(query) 
     result = cur.fetchall()
     cur.close()
