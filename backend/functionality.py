@@ -65,12 +65,12 @@ def create_tables():
 
 #inserting some data into the database if it doesn't already exist
 def create_data():
-    query = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu', 'carlmart/calc_lebbeq', 'Good'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
-    query1 = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu', 'carlmart/lamp_dtrcpw', 'New' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
-    query2 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'nwikeb1201231500', 'Cactus', 'Cute little cactus', 5, 'nwikeb@carleton.edu', 'carlmart/cactus_tjedp7' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'nwikeb1201231500')"    
-    query3 = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'quinns0112230950', 'Nintendo Switch', 'used switch good condition', 45, 'quinns@carleton.edu', 'carlmart/nintendo_byntfb', 'Used- Very Good'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
-    query4 = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'quinns0112231000', 'Beanbag chair', 'black beanbag chair medium size', 30, 'quinns@carleton.edu', 'carlmart/beanbag_w6pryd', 'Used- Acceptable'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231000')"
-    query5 = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'quinns0112231010', 'Ipad', 'like new ipad 10 in.', 800, 'quinns@carleton.edu', 'carlmart/ipad_oljnha', 'Used- Very Good'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231010')"
+    query = "INSERT INTO listings (listing, title, description, price, contact, image, condition, category) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu', 'carlmart/calc_lebbeq', 'Good', 'books'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
+    query1 = "INSERT INTO listings (listing, title, description, price, contact, image, condition, category) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu', 'carlmart/lamp_dtrcpw', 'New', 'furniture' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
+    query2 = "INSERT INTO listings (listing, title, description, price, contact, image, category) SELECT 'nwikeb1201231500', 'Cactus', 'Cute little cactus', 5, 'nwikeb@carleton.edu', 'carlmart/cactus_tjedp7', 'plants' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'nwikeb1201231500')"    
+    query3 = "INSERT INTO listings (listing, title, description, price, contact, image, condition, category) SELECT 'quinns0112230950', 'Nintendo Switch', 'used switch good condition', 45, 'quinns@carleton.edu', 'carlmart/nintendo_byntfb', 'Used- Very Good', 'electronics'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
+    query4 = "INSERT INTO listings (listing, title, description, price, contact, image, condition, category) SELECT 'quinns0112231000', 'Beanbag chair', 'black beanbag chair medium size', 30, 'quinns@carleton.edu', 'carlmart/beanbag_w6pryd', 'Used- Acceptable', 'furniture'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231000')"
+    query5 = "INSERT INTO listings (listing, title, description, price, contact, image, condition, category) SELECT 'quinns0112231010', 'Ipad', 'like new ipad 10 in.', 800, 'quinns@carleton.edu', 'carlmart/ipad_oljnha', 'Used- Very Good', 'electronics'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231010')"
 
     queries = [query, query1, query2, query3, query4, query5]
     cur, conn = connect()
@@ -98,6 +98,16 @@ def select_data(table, column, id):
     cur, conn = connect()
     query = 'SELECT title, description, price, contact, image, condition FROM ' + table + " WHERE " + column + " ILIKE '%" + id + "%';" 
     cur.execute(query) 
+    result = cur.fetchall()
+    cur.close()
+    conn.close()
+    return result
+
+def filter(table, filters):
+    cur, conn = connect()
+    where_clause = " OR ".join([f"category = %s" for value in filters])
+    query = f'SELECT title, description, price, contact, image, condition FROM {table} WHERE {where_clause};'
+    cur.execute(query, filters)
     result = cur.fetchall()
     cur.close()
     conn.close()
@@ -131,14 +141,17 @@ def select_all_listings(sort):
     conn.close()
     return result
 
-def sort_by_price_low_to_high():
-    return "ORDER BY price ASC"
-def sort_by_price_high_to_low():
-    return "ORDER BY price DESC"
-def sort_by_date_newest():
-    return "ORDER BY timestamp DESC"
-def sort_by_date_oldest():
-    return "ORDER BY price ASC"
+def sort_options(sort):
+    sort_query = ''
+    if sort == 'price-asc':
+        sort_query = "ORDER BY price ASC"
+    elif sort == 'price-desc':
+        sort_query = "ORDER BY price DESC"
+    elif sort == 'date-asc':
+        sort_query = "ORDER BY timestamp DESC"
+    elif sort == 'date-desc':
+        sort_query = "ORDER BY price ASC"
+    return sort_query
 
 def delete_data(table, column, id):
     cur, conn = connect()
