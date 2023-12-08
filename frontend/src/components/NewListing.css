@@ -1,190 +1,199 @@
-@import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-
 html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Raleway', serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .content {
-  flex: 1;
-  padding: 20px; /* Add padding as necessary */
+flex: 1;
+padding: 20px; /* Add padding as necessary */
 }
 
 
 .listing-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensure the container fills at least the whole height of the viewport */
+display: flex;
+flex-direction: column;
+min-height: 100vh; /* Ensure the container fills at least the whole height of the viewport */
 }
 
 .search-bar {
-  flex-grow: 1; 
-  margin: 0 15px; 
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
+flex-grow: 1; 
+margin: 0 15px; 
+padding: 8px 16px;
+border: 1px solid #ddd;
+border-radius: 4px;
+font-size: 16px;
 }
 
 .nav-buttons {
-  display: flex;
+display: flex;
 }
 
 .header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #f0f0f0;
-  font-size: 1.4rem;
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 10px 20px;
+background-color: #f0f0f0;
+font-size: 1.4rem;
 }
 
 .header .nav-logo {
-  font-family: 'Holtwood One SC', serif;
-  font-size: 33px;
-  color: rgb(0, 0, 131);
+font-family: 'Holtwood One SC', serif;
+font-size: 33px;
+color: rgb(0, 0, 131);
 }
 
 .nav-buttons button:not(:last-child) {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 /* Styles for individual buttons */
 .nav-buttons button {
-    background: transparent;
-    border: none;
-    color: #000000;
-    font-size: 1.4rem;
-    padding: 10px 20px;
-    cursor: pointer;
-    flex-grow: 1; 
-    text-align: center; 
+  background: transparent;
+  border: none;
+  color: #000000;
+  font-size: 1.4rem;
+  padding: 10px 20px;
+  cursor: pointer;
+  flex-grow: 1; 
+  text-align: center; 
 }
 
 .categories {
-  position: relative;
-  display: inline-block;
+position: relative;
+display: inline-block;
 }
 
 .categories button {
-  background: none;
-  border: none;
-  padding: 10px 15px;
-  margin: 0 5px;
-  font-size: 1.4rem;
-  cursor: pointer;
-  color: #000000;
+background: none;
+border: none;
+padding: 10px 15px;
+margin: 0 5px;
+font-size: 1.4rem;
+cursor: pointer;
+color: #000000;
 }
 
 .dropdown-content {
-  display: block;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
+display: block;
+position: absolute;
+background-color: #f9f9f9;
+min-width: 160px;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+padding: 12px 16px;
+z-index: 1;
 }
 
 .dropdown-item {
-  padding: 5px 0;
-  cursor: pointer;
+padding: 5px 0;
+cursor: pointer;
 }
 
 .dropdown-item:hover {
-  background-color: #ddd;
+background-color: #ddd;
 }
 
 .hamburger-icon {
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 5px;
-  font-size: 1.4rem;
-  line-height: 1.4rem;
+display: inline-block;
+vertical-align: middle;
+margin-right: 5px;
+font-size: 1.4rem;
+line-height: 1.4rem;
 }
 
 .hamburger-icon div {
-  width: 1.4rem; 
-  height: 0.15rem;
-  background-color: #333;
-  margin: 0.25rem 0;
+width: 1.4rem; 
+height: 0.15rem;
+background-color: #333;
+margin: 0.25rem 0;
 }
 
 .create-new-listing {
-    flex: 1;
+  flex: 1;
+  padding-left: 20px;
 }
 
 .new-listings h2 {
-  padding-left: 20px; 
-  padding-top: 40px;
-  margin: 0; 
-  font-size: 30px;
-  color: #333; 
-  font-family: 'Raleway',sans-serif;
+padding-left: 20px;
+padding-top: 40px;
+margin: 0;
+font-size: 30px;
+color: #333;
+font-family: 'Inter';
+font-weight: bolder;
 }
 
 .listings-form {
-  position: relative;
-  width: 100%;
-  max-width: 320px;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem; 
+position: relative;
+width: 100%;
+max-width: 320px;
+display: flex;
+flex-direction: column;
+gap: 0.3rem; 
 }
 
 .listings-form label {
-  font-family: 'Inter';
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 400;
+font-family: 'Inter';
+font-size: 24px;
+font-style: normal;
+font-weight: 400;
+display: flex;
+display: inline-block; 
+margin-right: 10px; /* Adjust the space between the label and the input field */
+vertical-align: top;
+vertical-align: middle;
 }
 
-.listings-form input {
-  color: #000;
-  text-align: center;
-  font-family: 'Inter';
-  font-size: 20px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: normal;
-  padding: 10px 15px;
-  margin-bottom: 1rem; 
-  font-size: 15px;
-  color: #333; 
-  border-radius: 12px;
+.listings-form input, 
+.listings-form select { /* Added select to apply styles to dropdowns as well */
+margin-top: 4%;
+margin-left: 8px;
+color: #000;
+text-align: center;
+font-family: 'Inter';
+font-size: 20px;
+font-style: normal;
+font-weight: 400;
+line-height: normal;
+padding: 10px 15px;
+margin-bottom: 1rem;
+font-size: 15px;
+color: #333;
+border-radius: 12px;
+outline: none; /* Removes the blue outline on focus in most browsers */
+display: inline-block; 
+vertical-align: middle; /* Align input vertically in the middle */
 }
 
 #description {
-  width: 500px;
-  height: 200px;
+width: 500px;
+height: 200px;
 }
 
 .listings-form input::placeholder {
-  color: #888; 
-  opacity: 1; 
+color: #888; 
+opacity: 1; 
 }
 
 #postButton {
-  font-family: 'Inter';
-  padding: 10px;
-  margin-bottom: 1rem; 
-  border: 1px solid #003365;
-  font-size: 24px;
-  border-radius: 12px;
-  background: #003365;
-  color: white;
-  font-style: normal;
-  font-weight: 400;
+font-family: 'Inter';
+padding: 10px;
+margin-bottom: 1rem; 
+border: 1px solid #003365;
+font-size: 24px;
+border-radius: 12px;
+background: #003365;
+color: white;
+font-style: normal;
+font-weight: 400;
 }
 
 .footer {
-  font-size: 15px;
-  background-color: #333; 
-  color: #fff; 
-  text-align: center; 
-  padding: 10px 0; 
-  width: 100%; 
+font-size: 15px;
+background-color: #333; 
+color: #fff; 
+text-align: center; 
+padding: 10px 0; 
+width: 100%; 
 }

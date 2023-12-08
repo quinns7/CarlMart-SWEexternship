@@ -107,12 +107,11 @@ def create_user():
 @app.route('/search', methods = ["GET"])
 def get_listings():
     id = request.args.get('item')
-    category = request.args.get("category")
+    #category = request.args.get("category")
 
-    listings_title = functionality.select_data("listings", category, id)
+    listings_title = functionality.select_data("listings", "title", id)
     
-    return jsonify(listings_title)
-
+    return (listings_title)
 
 #format: .../user?username=bobby
 @app.route('/user', methods = ["GET"])

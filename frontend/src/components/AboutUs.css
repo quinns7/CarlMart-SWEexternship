@@ -1,210 +1,84 @@
-@import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-
 html, body {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    font-family: 'Raleway', serif;
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
 .content {
-  flex: 1;
-  padding: 20px; /* Add padding as necessary */
+flex: 1;
+padding: 20px; /* Add padding as necessary */
+}
+
+.about-us {
+  margin-left: -20px; /* Pull the header to the left by 20px */
+  margin-right: -20px;
+  text-align: center;
+  padding: 40px 50px; /* Increase the horizontal padding to indent the entire section */
+  background-color: #f4f4f4;
+  color: #333;
 }
 
 
-.home-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh; /* Ensure the container fills at least the whole height of the viewport */
-}
-
-.search-bar {
-  flex-grow: 1; 
-  margin: 0 15px; 
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-.nav-buttons {
-  display: flex;
-}
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 20px;
-  background-color: #f0f0f0;
-  font-size: 1.4rem;
-}
-
-.header .nav-logo {
-  font-family: 'Holtwood One SC', serif;
-  font-size: 33px;
-  color: rgb(0, 0, 131);
-}
-
-.nav-buttons button:not(:last-child) {
-    margin-right: 10px;
-}
-
-/* Styles for individual buttons */
-.nav-buttons button {
-    background: transparent;
-    border: none;
-    color: #000000;
-    font-size: 1.4rem;
-    padding: 10px 20px;
-    cursor: pointer;
-    flex-grow: 1; 
-    text-align: center; 
-}
-
-.categories {
-  position: relative;
-  display: inline-block;
-}
-
-.categories button {
-  background: none;
-  border: none;
-  padding: 10px 15px;
-  margin: 0 5px;
-  font-size: 1.4rem;
-  cursor: pointer;
-  color: #000000;
-}
-
-.dropdown-content {
-  display: block;
-  position: absolute;
-  background-color: #f9f9f9;
-  min-width: 160px;
-  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-  padding: 12px 16px;
-  z-index: 1;
-}
-
-.dropdown-item {
-  padding: 5px 0;
-  cursor: pointer;
-}
-
-.dropdown-item:hover {
-  background-color: #ddd;
-}
-
-.hamburger-icon {
-  display: inline-block;
-  vertical-align: middle;
-  margin-right: 5px;
-  font-size: 1.4rem;
-  line-height: 1.4rem;
-}
-
-.hamburger-icon div {
-  width: 1.4rem; 
-  height: 0.15rem;
-  background-color: #333;
-  margin: 0.25rem 0;
-}
-
-.new-listings h2 {
-  padding-left: 20px; 
-  padding-top: 40px;
-  margin: 0; 
-  font-size: 25px;
-  color: #333; 
-  font-family: 'Raleway',sans-serif;
-}
 .about-us h2 {
-    padding-left: 20px; 
-    padding-top: 40px;
-    margin: 0; 
-    font-size: 25px;
-    color: #333; 
-    font-family: 'Raleway',sans-serif;
-  }
-
-.new-listings-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-  grid-gap: 30px; 
-  justify-content: center; 
-  padding: 20px;
+  margin-bottom: 30px; /* Add space below the header */
+  font-size: 2.5rem; /* Make the header larger */
+  color: #003069; /* Use the primary color for headers */
 }
 
 .about-us-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-    grid-gap: 30px; 
-    justify-content: center; 
-    padding: 20px;
-  }
+  padding-left: 50px; /* Indent the grid content from the left */
+  padding-right: 50px; 
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  grid-gap: 30px;
+  justify-items: center;
+  padding: 0 50px; /* Increase the horizontal padding for more indentation */
+  margin: auto; /* Center the grid in the middle of the page */
+  max-width: 1200px; /* You can adjust max-width to suit your design preference */
+}
 
-.listing-card {
-  background: #fff;
+
+.devInfo-card {
+  background: #ffffff;
   border: 1px solid #ddd;
   border-radius: 8px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column; 
-  justify-content: space-between;
+  padding: 20px; /* Adjust padding to create indentation inside each card */
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease-in-out;
 }
 
-.listing-card img {
-  width: 100%;
-  height: 200px; 
-  object-fit: cover;
+.devInfo-card:hover {
+  transform: translateY(-5px); /* Slight raise effect on hover */
 }
 
-.listing-details {
-  padding: 10px;
-  text-align: center; 
-}
-
-.listing-title {
-  font-size: 1.1rem;
-  margin: 10px 0;
-}
-
-.listing-price {
-  font-size: 1rem;
-  color: #666;
-}
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-
-.modal {
-  background: white;
-  padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  z-index: 1001;
-  max-width: 500px; 
-  max-height: 90vh;
-  overflow-y: auto;
+.devInfo-name {
+  font-size: 1.2rem; /* Slightly larger font size for names */
+  color: #003069; /* Use the primary color for names */
+  margin-bottom: 10px; /* Space below the name */
 }
 
 .footer {
-  font-size: 15px;
-  background-color: #333; 
-  color: #fff; 
-  text-align: center; 
-  padding: 10px 0; 
-  width: 100%; 
+  background-color: #333; /* Keep a dark footer */
+  color: #fff; /* White text for contrast */
+  text-align: center;
+  padding: 10px 0;
+  position: relative; /* Needed for absolute positioning of about-us link */
+  clear: both; /* Clear fix in case of floating elements */
+}
+
+.about-us-link {
+  position: absolute; /* Position the about-us link absolutely within the footer */
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%); /* Center vertically */
+  background-color: #003069;
+  color: #fff;
+  padding: 10px 15px;
+  border-radius: 4px;
+  text-decoration: none; /* Remove underline */
+  transition: background-color 0.3s ease; /* Smooth background color transition on hover */
+}
+
+.about-us-link:hover {
+  background-color: #00458b; /* Darken the button on hover */
 }

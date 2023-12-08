@@ -86,11 +86,14 @@ function NewListing() {
   };
 
   return (
-    <div className="listing-container">
+    <div className="home-container">
       <header className="header">
-      <Link to ="/" style={{ textDecoration: 'none' }}><div className="nav-logo">CarlMart</div></Link>
+        <Link to ="/"> 
+          <div className="nav-logo">CarlMart</div>
+        </Link>
 
-        {/* Categories Dropdown */}
+        <input type="text" placeholder="Search..." className="search-bar" />
+
         <div className="categories">
           <Select 
           isMulti={true}
@@ -113,23 +116,26 @@ function NewListing() {
           )}
         </div>
       
-        <input type="text" placeholder="Search..." className="search-bar" />
         <div className="nav-buttons">
           <button className="nav-item" onClick={handleNavToNewListing}>
             <span role="img" aria-label="add">➕</span> New Listing
           </button>
-          <button className="nav-item" onClick={() => console.log('Sign In clicked')}>
-            <span role="img" aria-label="person">👤</span> Profile
-          </button>
+
+          <Link to ="/login">
+            <button className="nav-item" onClick={() => console.log('Sign In clicked')}> <span role="img" aria-label="person">👤</span> Sign In </button>
+          </Link>
+
         </div>
       </header>
 
       <section className="create-new-listing">
-        <h2>New Listing</h2>
+      <h2 id="new-listings-header" style={{ fontFamily: "'Inter'" }}>
+        New Listing
+      </h2>
         <div className="new-listing">
           <form onSubmit={handleSubmit} class="listings-form">
             <label>
-              Title:
+              Title: 
               <input 
                 type="text" 
                 placeholder="ex: Black Desk Lamp" 

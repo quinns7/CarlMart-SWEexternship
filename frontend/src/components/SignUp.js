@@ -30,7 +30,7 @@ const SignUp = () => {
       //]
     //S}
 
-    //Not functioning properly.  Problem
+    //Not functioning properly
     try { fetch('/signup', {  // Enter your IP address here
       method: 'POST', 
       mode: 'cors', 
