@@ -142,15 +142,17 @@ a {
   padding: 10px;
 }
 
-.new-listings-grid, p{
+.new-listings-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
-  grid-gap: 30px; 
-  justify-content: center; 
+  grid-template-columns: repeat(4, 1fr); /* Adjust the number as needed */
+  grid-gap: 30px;
+  justify-content: center;
   padding: 20px;
 }
 
 .listing-card {
+  margin: 0 auto; /* This will center the card in the grid cell if it's the only one */
+  max-width: 300px; 
   background: #fff;
   border: 1px solid #ddd;
   border-radius: 8px;
