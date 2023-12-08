@@ -1,7 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
 import './Home.css';
 import Select from "react-select";
+// import cactusImage from '../dummy/cactus.jpg';
+// import calcImage from '../dummy/calc.jpg';
+// import lampImage from '../dummy/lamp.webp';
+// import switchImage from '../dummy/nintendo.jpg'
+// import beanImage from '../dummy/beanbag.jpg'
+// import padImage from '../dummy/ipad.jpg'
 import { useNavigate } from "react-router-dom";
 // import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
@@ -9,28 +14,16 @@ import { useNavigate } from "react-router-dom";
 const ListingModal = ({ listing, onClose }) => {
   if (!listing) return null;
 
-    // Handle outside click
-    const handleOutsideClick = (e) => {
-      if (e.target === e.currentTarget) {
-        onClose();
-      }
-    };
-
   return (
-    <div className="modal-backdrop" onClick={handleOutsideClick}>
+    <div className="modal-backdrop">
       <div className="modal">
-        <button className="modal-close-button" onClick={onClose}>X</button>
-        <div className="modal-content">
-          <div className="modal-image-container">
-            <img src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${listing[4]}.jpg`} alt={listing[0]} className="listing-image" />
-          </div>
-          <div className="modal-text">
-            <h2>{listing[0]}</h2>
-            <p>Price: ${listing[2]}</p>
-            <p>Description: {listing[1]}</p>
-            <p>Contact: {listing[3]}</p>
-          </div>
-        </div>
+        <h2>{listing[0]}</h2>
+        <p>Price: ${listing[2]}</p>
+        <p>Description: {listing[1]}</p>
+        <p>Category: {listing[5]}</p>
+        <p>Description: {listing[6]}</p>
+        <p>Contact: {listing[3]}</p>
+        <button onClick={onClose}>Close</button>
       </div>
     </div>
   );
@@ -46,6 +39,7 @@ function Home() {
   const [sort, setSort] = useState('');
   const [data, setData] = useState([{}])
 
+
   useEffect(() => {
     fetch("/home").then(
       res => res.json()
@@ -57,6 +51,8 @@ function Home() {
     )
   }, []);
   
+
+
   // Function to open the modal with the listing details
   const openModal = (listing) => {
     setSelectedListing(listing);
@@ -70,11 +66,11 @@ function Home() {
   };
 
   const handleNavToNewListing = () => {
-    navigate('/new-listing'); 
+    navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
   };
 
   const handleNavigateToAboutUs = () => {
-    navigate('/about-us');
+    navigate('/about-us'); // Replace '/signup' with your actual sign-up route
   };
 
   const [searchTerm, setSearchTerm] = useState('');
@@ -157,12 +153,9 @@ function Home() {
   return (
     <div className="home-container">
       <header className="header">
-        <Link to ="/"> 
-          <div className="nav-logo">CarlMart</div>
-        </Link>
+        <div className="nav-logo">CarlMart</div>
 
-        <input type="text" placeholder="Search..." className="search-bar" />
-
+        {/* Categories Dropdown */}
         <div className="categories">
           <Select 
           isMulti={true}
@@ -197,26 +190,25 @@ function Home() {
           <button className="nav-item" onClick={handleNavToNewListing}>
             <span role="img" aria-label="add">➕</span> New Listing
           </button>
-
-          <Link to ="/login">
-            <button className="nav-item" onClick={() => console.log('Sign In clicked')}> <span role="img" aria-label="person">👤</span> Sign In </button>
-          </Link>
-
+          <button className="nav-item" onClick={() => console.log('Sign In clicked')}>
+            <span role="img" aria-label="person">👤</span> Sign In
+          </button>
         </div>
       </header>
 
       <section className="new-listings">
-        <div className="listings-header">
-          <h2>New Listings</h2>
-          <div className="sort-dropdown">
-            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+        <h2>New Listings</h2>
+        <div>
+            <select
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+            >
               <option value="">Sort Results</option>
               <option value="price-asc">Price: Low to High</option>
               <option value="price-desc">Price: High to Low</option>
               <option value="date-asc">Date Posted: Oldest to Newest</option>
               <option value="date-desc">Date Posted: Newest to Oldest</option>
             </select>
-          </div>
         </div>
         <div className="new-listings-grid">
 
@@ -263,16 +255,13 @@ function Home() {
           )}
         </div>
       </section>
-
       
       {isModalOpen && <ListingModal listing={selectedListing} onClose={closeModal} />}
 
       <footer className="footer">
+        <div className="about-us"><button className="about-us-link" onClick={handleNavigateToAboutUs}>About Us</button></div>
         <p>© {new Date().getFullYear()} CarlMart, Inc. All rights reserved.</p>
-        <button className="about-us-link" onClick={handleNavigateToAboutUs}>About Us</button>
       </footer>
-
-
       
     </div>
   );

@@ -1,8 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Gotham:wght@300;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
 html, body {
-  height: 100%;
-  font-family: 'Gotham';
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Raleway', serif;
+}
+
+.content {
+  flex: 1;
+  padding: 20px; /* Add padding as necessary */
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh; /* Ensure the container fills at least the whole height of the viewport */
+}
+
+.search-bar {
+  flex-grow: 1; 
+  margin: 0 15px; 
+  padding: 8px 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.nav-buttons {
+  display: flex;
 }
 
 .header {
@@ -10,52 +38,30 @@ html, body {
   align-items: center;
   justify-content: space-between;
   padding: 10px 20px;
-  background: linear-gradient(to right, #c6d8c2, #b8dad6, #bbe7ef);
-  font-family: 'Gotham';
-  font-weight: 700; 
-}
-
-a {
-  font-size: 33px;
-  color: #003069;
-  text-decoration: none;
-}
-
-.search-bar {
-  flex-grow: 1;
-  margin: 0 15px;
-  padding: 8px 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-  font-family: 'Gotham', sans-serif;
-  font-weight: 300;
-  color: #003069;
-}
-
-/* .about-us button {
-  background: transparent;
-  border: none;
-  display: center;
-  color: white;
-  font-size: 13px;
-  text-align: center; 
-  padding: 4px 0; 
-} */
-
-.nav-buttons {
-  display: flex;
-}
-
-.nav-buttons button {
-  background: transparent;
-  border: none;
+  background-color: #f0f0f0;
   font-size: 1.4rem;
-  padding: 10px 20px;
-  cursor: pointer;
-  text-align: center;
-  font-family: 'Gotham';
-  color: #003069;
+}
+
+.header .nav-logo {
+  font-family: 'Holtwood One SC', serif;
+  font-size: 33px;
+  color: rgb(0, 0, 131);
+}
+
+.nav-buttons button:not(:last-child) {
+    margin-right: 10px;
+}
+
+/* Styles for individual buttons */
+.nav-buttons button {
+    background: transparent;
+    border: none;
+    color: #000000;
+    font-size: 1.4rem;
+    padding: 10px 20px;
+    cursor: pointer;
+    flex-grow: 1; 
+    text-align: center; 
 }
 
 .categories {
@@ -67,11 +73,10 @@ a {
   background: none;
   border: none;
   padding: 10px 15px;
-  margin: 0 5px;
+  margin: 5 px;
   font-size: 1.4rem;
   cursor: pointer;
-  font-family: 'Gotham';
-  color: #003069;
+  color: #000000;
 }
 
 .dropdown-content {
@@ -82,8 +87,6 @@ a {
   box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
   padding: 12px 16px;
   z-index: 1;
-  font-family: 'Gotham', sans-serif;
-  color: #003069;
 }
 
 .dropdown-item {
@@ -101,48 +104,25 @@ a {
   margin-right: 5px;
   font-size: 1.4rem;
   line-height: 1.4rem;
-  color: #003069;
 }
 
 .hamburger-icon div {
-  width: 1.4rem;
+  width: 1.4rem; 
   height: 0.15rem;
-  background-color: #003069;
+  background-color: #333;
   margin: 0.25rem 0;
 }
 
-.listings-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
 .new-listings h2 {
-  font-size: 16px; 
-  color: #003069; 
-  font-family: 'Gotham';
-  font-weight: lighter;
+  padding-left: 20px; 
+  padding-top: 40px;
+  margin: 0; 
+  font-size: 25px;
+  color: #333; 
+  font-family: 'Raleway',sans-serif;
 }
 
-.sort-dropdown {
-  margin-top: 2%;
-  margin-right: 2%;
-}
-
-.sort-dropdown select {
-  padding: 8px 16px;
-  border-radius: 4px;
-  border: 1px solid #ddd;
-  font-size: 16px; 
-  background-color: white;
-  min-height: 30px; 
-}
-
-.sort-dropdown option {
-  padding: 10px;
-}
-
-.new-listings-grid, p{
+.new-listings-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); 
   grid-gap: 30px; 
@@ -158,7 +138,6 @@ a {
   display: flex;
   flex-direction: column; 
   justify-content: space-between;
-  font-family: 'Gotham';
 }
 
 .listing-card img {
@@ -181,7 +160,6 @@ a {
   font-size: 1rem;
   color: #666;
 }
-
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -200,85 +178,17 @@ a {
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
-  max-width: 600px; 
-  max-height: 80vh; 
+  z-index: 1001;
+  max-width: 500px; 
+  max-height: 90vh;
   overflow-y: auto;
-  display: flex;
-  flex-direction: column; 
-}
-
-
-.modal-content {
-  display: flex;
-  flex-direction: column; 
-  align-items: center;
-}
-
-.modal-close-button {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  border: none;
-  background: none;
-  font-size: 24px;
-  cursor: pointer;
-  color: #707070;
-}
-
-.modal-image-container {
-  max-width: 90%;
-  display: flex;
-  justify-content: center; 
-}
-
-.modal-image {
-  max-width: 100%;
-  max-height: 300px;
-  object-fit: contain; 
-  border-radius: 8px; 
-  margin-bottom: 20px;
-}
-
-.modal-text {
-  max-width: 90%;
-  text-align: center;
 }
 
 .footer {
-  font-size: 13px;
-  background-color: #333;
-  color: #fff;
-  text-align: center;
-  padding: 10px 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 5px; 
-  width: 100%;
-}
-
-.footer p {
-  margin: 0; 
-}
-
-.about-us-link {
-  font-family: 'Inter';
-  background-color: transparent;
-  border: 1px solid #fff;
-  border-radius: 4px;
-  color: #fff;
-  padding: 8px 16px;
-  margin-top: 5px; 
-  margin-bottom: 5px; 
-  font-size: 13px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.about-us-link:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  color: #ddd;
-  text-decoration: none;
+  font-size: 15px;
+  background-color: #333; 
+  color: #fff; 
+  text-align: center; 
+  padding: 10px 0; 
+  width: 100%; 
 }

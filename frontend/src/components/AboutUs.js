@@ -1,15 +1,42 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom'
 import './Home.css';
+import cactusImage from '../dummy/cactus.jpg';
+import calcImage from '../dummy/calc.jpg';
+import lampImage from '../dummy/lamp.webp';
+import switchImage from '../dummy/nintendo.jpg'
+import beanImage from '../dummy/beanbag.jpg'
+import padImage from '../dummy/ipad.jpg'
 import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
-const aboutUsStyle = {
-  paddingLeft: '50px', // Indentation from the left
-  paddingRight: '50px', // Indentation from the right
+
+const ListingModal = ({ listing, onClose }) => {
+  if (!listing) return null;
+
+  return (
+    <div className="modal-backdrop">
+      <div className="modal">
+        <h2>{listing[0]}</h2>
+        <p>Price: ${listing[2]}</p>
+        <p>Description: {listing[1]}</p>
+        <p>Contact: {listing[3]}</p>
+        <button onClick={onClose}>Close</button>
+      </div>
+    </div>
+  );
+};
+
+const imageMap = {
+  cactusImage: cactusImage,
+  calcImage: calcImage,
+  lampImage: lampImage,
+  switchImage: switchImage,
+  beanImage: beanImage,
+  padImage: padImage,
 };
 
 function AboutUs() {
+
   const [showCategories, setShowCategories] = useState(false);
   const categories = [{value: 'books', label: 'Books'}, {value: 'electronics', label: 'Electronics'}, {value: 'apparel', label: 'Apparel'}, {value: 'furniture', label:'Furniture'}, {value: 'toys', label: 'Toys'}];
   const navigate = useNavigate();
@@ -17,25 +44,21 @@ function AboutUs() {
   //const devInfo = ['CS student at Carleton', 'Another CS student at Carleton', 'Yet another CS student at Carleton', 'And another CS student at Carleton'];
 
   const handleNavToNewListing = () => {
-    navigate('/new-listing');
+    navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
   };
 
   const handleNavigateToAboutUs = () => {
-    navigate('/about-us'); 
+    navigate('/about-us'); // Replace '/signup' with your actual sign-up route
   };
 
-  // const handleNavigateToHome = () => {
-  //   navigate('/');
-  // };
+  const handleNavigateToHome = () => {
+    navigate('/'); // Replace '/signup' with your actual sign-up route
+  };
 
   return (
     <div className="home-container">
       <header className="header">
-        <Link to ="/"> 
-          <div className="nav-logo">CarlMart</div>
-        </Link>
-        
-        <input type="text" placeholder="Search..." className="search-bar" />
+        <div className="nav-logo" onClick={handleNavigateToHome} >CarlMart</div>
 
         {/* Categories Dropdown */}
         <div className="categories">
@@ -59,31 +82,32 @@ function AboutUs() {
             </div>
           )}
         </div>
-    
+      
+        <input type="text" placeholder="Search..." className="search-bar" />
         <div className="nav-buttons">
           <button className="nav-item" onClick={handleNavToNewListing}>
             <span role="img" aria-label="add">➕</span> New Listing
           </button>
-
-          <Link to ="/login">
-            <button className="nav-item" onClick={() => console.log('Sign In clicked')}> <span role="img" aria-label="person">👤</span> Sign In </button>
-          </Link>
-
+          <button className="nav-item" onClick={() => console.log('Sign In clicked')}>
+            <span role="img" aria-label="person">👤</span> Sign In
+          </button>
         </div>
       </header>
 
-      <section className="about-us" style={aboutUsStyle}>
-        <h2 style={{ marginLeft: '-20px', marginRight: '-20px' }}>About Us</h2> 
+      <section className="about-us">
+        <h2>About Us</h2>
         <div className="about-us-grid">
-          {devInfo.map((info, i) => (
-            <div key={i} className="devInfo-card">
-              <h3 className="devInfo-name">{info[0]}</h3>
-              <p>{info[1]}</p>
-            </div>
-          ))}
+            {(devInfo.map((unit, i) => (
+                <div key={i} className="devInfo-card">
+                <div className="devInfo-details">
+                    <h3 className="devInfo-name">{unit[0]}: {unit[1]}</h3>
+                </div>
+                </div>
+            )))}
+
         </div>
       </section>
-
+      
       
       <footer className="footer">
         <div className="about-us"><button className="about-us-link" onClick={handleNavigateToAboutUs}>About Us</button></div>

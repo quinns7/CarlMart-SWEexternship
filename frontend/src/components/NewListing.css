@@ -1,7 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
+    font-family: 'Raleway', serif;
 }
 
 .content {
@@ -111,17 +115,15 @@ html, body {
 
 .create-new-listing {
     flex: 1;
-    padding-left: 20px;
 }
 
 .new-listings h2 {
-  padding-left: 20px;
+  padding-left: 20px; 
   padding-top: 40px;
-  margin: 0;
+  margin: 0; 
   font-size: 30px;
-  color: #333;
-  font-family: 'Inter';
-  font-weight: bolder;
+  color: #333; 
+  font-family: 'Raleway',sans-serif;
 }
 
 .listings-form {
@@ -138,17 +140,9 @@ html, body {
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
-  display: flex;
-  display: inline-block; 
-  margin-right: 10px; /* Adjust the space between the label and the input field */
-  vertical-align: top;
-  vertical-align: middle;
 }
 
-.listings-form input, 
-.listings-form select { /* Added select to apply styles to dropdowns as well */
-  margin-top: 4%;
-  margin-left: 8px;
+.listings-form input {
   color: #000;
   text-align: center;
   font-family: 'Inter';
@@ -157,13 +151,10 @@ html, body {
   font-weight: 400;
   line-height: normal;
   padding: 10px 15px;
-  margin-bottom: 1rem;
+  margin-bottom: 1rem; 
   font-size: 15px;
-  color: #333;
+  color: #333; 
   border-radius: 12px;
-  outline: none; /* Removes the blue outline on focus in most browsers */
-  display: inline-block; 
-  vertical-align: middle; /* Align input vertically in the middle */
 }
 
 #description {
