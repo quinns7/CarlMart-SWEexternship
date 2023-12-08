@@ -1,10 +1,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Gotham:wght@300;700&display=swap');
 
 html, body {
-    /* margin: 0;
-    padding: 0; */
-    height: 100%;
-    font-family: 'Gotham';
+  height: 100%;
+  font-family: 'Gotham';
 }
 
 .header {
@@ -34,6 +32,16 @@ a {
   font-weight: 300;
   color: #003069;
 }
+
+/* .about-us button {
+  background: transparent;
+  border: none;
+  display: center;
+  color: white;
+  font-size: 13px;
+  text-align: center; 
+  padding: 4px 0; 
+} */
 
 .nav-buttons {
   display: flex;
@@ -223,7 +231,7 @@ a {
 .modal-image {
   width: 100%; 
   height: auto; 
-  border-radius: 8px; 
+  /* border-radius: 8px;  */
 }
 
 .modal-text {
@@ -235,10 +243,38 @@ a {
 
 .footer {
   font-size: 13px;
-  background-color: #333; 
-  color: #fff; 
-  text-align: center; 
-  padding: 4px 0; 
-  width: 100%; 
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0; /* Adjust the top and bottom padding of the footer as needed */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px; /* Reduced gap between items */
+  width: 100%;
 }
 
+.footer p {
+  margin: 0; /* Ensure there's no default margin */
+}
+
+.about-us-link {
+  background-color: transparent;
+  border: 1px solid #fff;
+  border-radius: 4px;
+  color: #fff;
+  padding: 8px 16px;
+  margin-top: 5px; /* Reduced margin-top to bring the button closer to the text */
+  margin-bottom: 5px; /* Reduced margin-bottom to lessen the space below the button */
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.about-us-link:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ddd;
+  text-decoration: none;
+}

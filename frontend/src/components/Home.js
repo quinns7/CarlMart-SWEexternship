@@ -22,17 +22,12 @@ const ListingModal = ({ listing, onClose }) => {
         <button className="modal-close-button" onClick={onClose}>X</button>
         <div className="modal-content">
           <div className="modal-image-container">
-            {/* Assuming listing[4] is the image URL */}
             <img src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${listing[4]}.jpg`} alt={listing[0]} className="listing-image" />
           </div>
           <div className="modal-text">
-            {/* Assuming listing[0] is the title */}
             <h2>{listing[0]}</h2>
-            {/* Assuming listing[2] is the price */}
             <p>Price: ${listing[2]}</p>
-            {/* Assuming listing[1] is the description */}
             <p>Description: {listing[1]}</p>
-            {/* Assuming listing[3] is the contact */}
             <p>Contact: {listing[3]}</p>
           </div>
         </div>
@@ -40,7 +35,6 @@ const ListingModal = ({ listing, onClose }) => {
     </div>
   );
 };
-
 
 function Home() {
 
@@ -211,9 +205,11 @@ function Home() {
       {isModalOpen && <ListingModal listing={selectedListing} onClose={closeModal} />}
 
       <footer className="footer">
-        <div className="about-us"><button className="about-us-link" onClick={handleNavigateToAboutUs}>About Us</button></div>
         <p>© {new Date().getFullYear()} CarlMart, Inc. All rights reserved.</p>
+        <button className="about-us-link" onClick={handleNavigateToAboutUs}>About Us</button>
       </footer>
+
+
       
     </div>
   );
