@@ -104,14 +104,22 @@ def create_user():
     #return render_template('home.html')
     return
 
+@app.route('/search', methods = ["GET"])
+def get_listings():
+    id = request.args.get('item')
+    #category = request.args.get("category")
+
+    listings_title = functionality.select_data("listings", "title", id)
+    
+    return (listings_title)
 
 #format: .../user?username=bobby
-@app.route('/user')
+@app.route('/user', methods = ["GET"])
 def get_user_profile():
     user_name = request.args.get('username')
     row = functionality.select_data("users", "username", user_name)
     #return render_template('home.html')
-    return row
+    return jsonify(row)
 
 #Clicking a link to an item should open up that item's page with a url of /item?listing=quinns214532t645325
 @app.route('/item', methods=['GET'])
@@ -119,6 +127,8 @@ def get_item():
     # Assuming you want to fetch all items for the '/api/item' endpoint
     items = functionality.select_all_listings()
     return jsonify(items)
+
+#def sort 
 
 @app.route('/item/delete')
 def delete_listing():

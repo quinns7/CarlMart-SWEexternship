@@ -65,12 +65,12 @@ def create_tables():
 
 #inserting some data into the database if it doesn't already exist
 def create_data():
-    query = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu', 'carlmart/calc_lebbeq'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
-    query1 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu', 'carlmart/lamp_dtrcpw' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
+    query = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'laz1129231230', 'Calc Textbook', 'Fundamentals of Calculus 9th edition', 50, 'laz@carleton.edu', 'carlmart/calc_lebbeq', 'Good'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'laz1129231230')"
+    query1 = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'moranh1130231045', 'Lamp', 'Used lamp', 10, 'moranh@carleton.edu', 'carlmart/lamp_dtrcpw', 'New' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'moranh1130231045')"    
     query2 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'nwikeb1201231500', 'Cactus', 'Cute little cactus', 5, 'nwikeb@carleton.edu', 'carlmart/cactus_tjedp7' WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'nwikeb1201231500')"    
-    query3 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112230950', 'Nintendo Switch', 'used switch good condition', 45, 'quinns@carleton.edu', 'carlmart/nintendo_byntfb'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
-    query4 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112231000', 'Beanbag chair', 'black beanbag chair medium size', 30, 'quinns@carleton.edu', 'carlmart/beanbag_w6pryd'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231000')"
-    query5 = "INSERT INTO listings (listing, title, description, price, contact, image) SELECT 'quinns0112231010', 'Ipad', 'like new ipad 10 in.', 800, 'quinns@carleton.edu', 'carlmart/ipad_oljnha'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231010')"
+    query3 = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'quinns0112230950', 'Nintendo Switch', 'used switch good condition', 45, 'quinns@carleton.edu', 'carlmart/nintendo_byntfb', 'Used- Very Good'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112230950')"
+    query4 = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'quinns0112231000', 'Beanbag chair', 'black beanbag chair medium size', 30, 'quinns@carleton.edu', 'carlmart/beanbag_w6pryd', 'Used- Acceptable'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231000')"
+    query5 = "INSERT INTO listings (listing, title, description, price, contact, image, condition) SELECT 'quinns0112231010', 'Ipad', 'like new ipad 10 in.', 800, 'quinns@carleton.edu', 'carlmart/ipad_oljnha', 'Used- Very Good'  WHERE NOT EXISTS (SELECT listing FROM listings WHERE listing = 'quinns0112231010')"
 
     queries = [query, query1, query2, query3, query4, query5]
     cur, conn = connect()
@@ -96,7 +96,7 @@ def select_query(table, column):
 #Returns a list of tuples
 def select_data(table, column, id):
     cur, conn = connect()
-    query = 'SELECT * FROM ' + table + " WHERE " + column + " = " + id + ";"
+    query = 'SELECT * FROM ' + table + " WHERE " + column + " LIKE '%" + id + "%';" 
     cur.execute(query) 
     result = cur.fetchall()
     cur.close()
@@ -120,7 +120,7 @@ def insert_row(table, columns, data):
 #returns a list of tuples
 def select_all_listings(sort):
     cur, conn = connect()
-    query = 'SELECT title, description, price, contact, image FROM "listings"' + sort
+    query = 'SELECT title, description, price, contact, image, condition FROM "listings"' + sort
     result = "no result yet"
     try:
         cur.execute(query) 
@@ -172,7 +172,8 @@ def create_new_listing(data, cloudinaryConfig):
             columns += key + ", "
     columns += "listing, timestamp)"
     listing_id, now = create_listing_id("quinns")
-    data_list.append(listing_id, now)
+    data_list.append(listing_id)
+    data_list.append(now.strftime("%Y-%m-%d %H:%M:%S"))
     parsed_data = str(tuple(data_list))
     return columns, parsed_data
 
