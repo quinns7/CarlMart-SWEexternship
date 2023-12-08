@@ -170,7 +170,7 @@ function Home() {
           </button>
 
           <Link to ="/login">
-            <button className="nav-item" onClick={() => console.log('Sign In clicked')}> <span role="img" aria-label="person">👤</span> </button>
+            <button className="nav-item" onClick={() => console.log('Sign In clicked')}> <span role="img" aria-label="person">👤</span> Sign In </button>
           </Link>
 
         </div>
