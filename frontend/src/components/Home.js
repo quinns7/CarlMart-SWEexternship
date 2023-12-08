@@ -246,7 +246,8 @@ function Home() {
 
       <section className="new-listings">
         <div className="listings-header">
-          <h2>New Listings</h2>
+          {!isSearching ? (<h2>New Listings</h2>) : (<h2>Results</h2>)}
+      
           <div className="sort-dropdown">
             <select value={sort} onChange={(e) => setSort(e.target.value)}>
               <option value="">Sort Results</option>
