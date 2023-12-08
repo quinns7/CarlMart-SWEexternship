@@ -40,13 +40,15 @@ const ListingModal = ({ listing, onClose }) => {
 function Home() {
 
   const [showCategories, setShowCategories] = useState('');
-  const categories = [{value: 'books', label: 'Books'}, {value: 'electronics', label: 'Electronics'}, {value: 'clothing', label: 'Clothing'}, {value: 'furniture', label:'Furniture'}, {value: 'plants', label: 'Plants'}, {value: 'transportation', label: 'Transporation'}, {value: 'other', label: 'Other'}];
+  const display_categories = [{value: 'books', label: 'Books'}, {value: 'electronics', label: 'Electronics'}, {value: 'clothing', label: 'Clothing'}, {value: 'furniture', label:'Furniture'}, {value: 'plants', label: 'Plants'}, {value: 'transportation', label: 'Transporation'}, {value: 'other', label: 'Other'}];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
   const navigate = useNavigate();
   const [sort, setSort] = useState('');
-  // const [data, setData] = useState([{}])
-  const [data, setData] = useState({ home: [] }); // Initialize 'home' as an empty array
+  const [data, setData] = useState({ home: [] });
+  const [filter, setFilter] = useState('');
+  const [filterResults, setFilterResults] = useState([]);
+  const [isFiltering, setIsFiltering] = useState(false);
 
 
   useEffect(() => {
@@ -101,9 +103,37 @@ function Home() {
     }
   };
 
-  const handleKeyPress = (e) => {
+  const handleKeyPressSearch = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
+    }
+  };
+
+  const handleCategories = async () => {
+    try {
+      if (filter.length === 0) {
+        console.log('No categories selected');
+        setIsFiltering(false)
+        return;
+      }
+      const filters = filter.map(option => option.value).join(',');
+      const response = await fetch(`/filter?item=${filters}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+      const data = await response.json();
+      console.log("We've got the data!")
+      console.log(data)
+      setFilterResults(data);
+      setIsFiltering(true)
+    } catch (error) {
+      console.error('There was a problem with the filtering:', error);
+    }
+  };
+
+  const handleKeyPressCategories = (e) => {
+    if (e.key === 'Enter') {
+      handleCategories();
     }
   };
 
@@ -149,64 +179,13 @@ function Home() {
     console.log('Home Page Response:', homeData);
   };
 
-  const handleCategories = async () => {
-
-    // Sort the listings
-    console.log("categories: ", showCategories)
-    const sortResponse = await fetch('/categories', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      credentials: 'include',
-      body: JSON.stringify({
-        categories: showCategories,
-      }),
-    });
-
-    if (!sortResponse.ok) {
-      throw new Error('Error sorting listings');
-    }
-    // const sortData = await sortResponse.json();
-
-    // // Reload the home page with the sorted listings
-    // const homeResponse = await fetch('/home', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   credentials: 'include',
-    //   body: JSON.stringify({
-    //     sort: sortData['sort'],
-    //   }),
-    // });
-
-    // if (!homeResponse.ok) {
-    //   throw new Error('Error fetching home page data');
-    // }
-
-    // // Handle the response as needed
-    // const homeData = await homeResponse.json();
-    // setData(homeData);
-    // console.log('Home Page Response:', homeData);
-  };  
-
   useEffect(() => {
     // This useEffect will run whenever the 'sort' state changes
     console.log('Updated sort:', sort);
     if (sort !== '') {
       handleSort();
     }
-  }, [sort]);
-
-
-  useEffect(() => {
-    // This useEffect will run whenever the 'sort' state changes
-    console.log('Updated categories:', showCategories);
-    if (showCategories) {
-      handleCategories();
-    }
-  }, [showCategories]);
+  }, [sort]); 
 
   return (
     <div className="home-container">
@@ -220,16 +199,23 @@ function Home() {
         placeholder="Search"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        onKeyUp={handleKeyPress}
+        onKeyUp={handleKeyPressSearch}
         className="search-bar"
         />
 
         <div className="categories">
           <Select 
           isMulti={true}
-          options={categories}
+          options={display_categories}
           placeholder="Select Categories..." 
-          onChange={() => setShowCategories(!showCategories)}>
+          // onChange={() => setShowCategories(!showCategories)}
+          onChange={(selectedOptions) => setFilter(selectedOptions)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              handleCategories();
+            }
+          }}
+          >
             <div className="hamburger-icon">
               <div></div>
               <div></div>
@@ -239,7 +225,7 @@ function Home() {
           </Select>
           {showCategories && (
             <div className="dropdown-content">
-              {categories.map((category, index) => (
+              {display_categories.map((category, index) => (
                 <div key={index} onClick={() => console.log(category)}>{category.label}</div>
               ))}
             </div>
@@ -273,33 +259,48 @@ function Home() {
         </div>
 
         <div className="new-listings-grid">
-          {!isSearching ? (
-            data.home.map((unit, i) => (
-              <div key={i} className="listing-card" onClick={() => openModal(unit)}>
-                <img
-                  src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${unit[4]}.jpg`}
-                  alt={unit[0]}
-                  className="listing-image"
-                />
-                <div className="listing-details">
-                  <h3 className="listing-title">{unit[0]}</h3>
-                  <p className="listing-price">${unit[2]}</p>
+          {!isFiltering ? (
+            !isSearching ? (
+              data.home.map((unit, i) => (
+                <div key={i} className="listing-card" onClick={() => openModal(unit)}>
+                  <img
+                    src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${unit[4]}.jpg`}
+                    alt={unit[0]}
+                    className="listing-image"
+                  />
+                  <div className="listing-details">
+                    <h3 className="listing-title">{unit[0]}</h3>
+                    <p className="listing-price">${unit[2]}</p>
+                  </div>
                 </div>
-              </div>
-            ))
-          ) : (
-            searchResults.map((item, index) => (
-              <div key={index} className="listing-card" onClick={() => openModal(item)}>
-                <img
-                  src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${item[5]}.jpg`}
-                  alt={item[1]}
-                  className="listing-image"
-                />
-                <div className="listing-details">
-                  <h3 className="listing-title">{item[1]}</h3>
-                  <p className="listing-price">${item[3]}</p>
+              ))
+            ) : (
+              searchResults.map((item, index) => (
+                <div key={index} className="listing-card" onClick={() => openModal(item)}>
+                  <img
+                    src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${item[5]}.jpg`}
+                    alt={item[1]}
+                    className="listing-image"
+                  />
+                  <div className="listing-details">
+                    <h3 className="listing-title">{item[1]}</h3>
+                    <p className="listing-price">${item[3]}</p>
+                  </div>
                 </div>
-              </div>
+              ))
+            )) : (
+              filterResults.map((item, index) => (
+                <div key={index} className="listing-card" onClick={() => openModal(item)}>
+                  <img
+                    src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${item[4]}.jpg`}
+                    alt={item[1]}
+                    className="listing-image"
+                  />
+                  <div className="listing-details">
+                    <h3 className="listing-title">{item[0]}</h3>
+                    <p className="listing-price">${item[2]}</p>
+                  </div>
+                </div>
             ))
           )}
         </div>
