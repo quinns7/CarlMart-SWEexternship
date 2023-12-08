@@ -28,6 +28,7 @@ const ListingModal = ({ listing, onClose }) => {
             <h2>{listing[0]}</h2>
             <p>Price: ${listing[2]}</p>
             <p>Description: {listing[1]}</p>
+            <p>Condition: {listing[5]}</p>            
             <p>Contact: {listing[3]}</p>
           </div>
         </div>

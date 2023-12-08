@@ -198,8 +198,12 @@ function NewListing() {
                 onChange={(e) => setCondition(e.target.value)}
               >
                 <option value="">Select a category</option>
-                <option value="used">Used</option>
-                <option value="new">New</option>
+                <option>New</option>
+                <option>Used- Like New</option>
+                <option>Used- Very Good</option>
+                <option>Used- Good</option>
+                <option>Used- Acceptable</option>
+                <option>Used- Broken</option>
               </select>
             </label>
             <label>
