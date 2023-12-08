@@ -1,11 +1,8 @@
-@import url('https://fonts.googleapis.com/css2?family=Holtwood+One+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-
 html, body {
     margin: 0;
     padding: 0;
     height: 100%;
-    font-family: 'Raleway', serif;
+    /* font-family: 'Raleway', serif; */
 }
 
 .content {
@@ -43,7 +40,7 @@ html, body {
 }
 
 .header .nav-logo {
-  font-family: 'Holtwood One SC', serif;
+  /* font-family: 'Holtwood One SC', serif; */
   font-size: 33px;
   color: rgb(0, 0, 131);
 }
@@ -119,7 +116,7 @@ html, body {
   margin: 0; 
   font-size: 25px;
   color: #333; 
-  font-family: 'Raleway',sans-serif;
+  /* font-family: 'Raleway',sans-serif; */
 }
 .about-us h2 {
     padding-left: 20px; 
@@ -127,7 +124,7 @@ html, body {
     margin: 0; 
     font-size: 25px;
     color: #333; 
-    font-family: 'Raleway',sans-serif;
+    /* font-family: 'Raleway',sans-serif; */
   }
 
 .new-listings-grid {
