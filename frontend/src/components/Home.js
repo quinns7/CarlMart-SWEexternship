@@ -73,6 +73,33 @@ function Home() {
     navigate('/about-us'); // Replace '/signup' with your actual sign-up route
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`/search?item=${searchTerm}`);
+      if (!response.ok) {
+        throw new Error('Network response was not ok.');
+      }
+      const data = await response.json();
+      console.log("We've got the data!")
+      console.log(data)
+      setSearchResults(data); // Update state with search results
+      setIsSearching(true)
+    } catch (error) {
+      console.error('There was a problem with the search:', error);
+      // Handle error scenarios, e.g., display an error message
+    }
+  };
+
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
+    }
+  };
+
   const handleSubmit = async () => {
 
     // Sort the listings
@@ -151,8 +178,14 @@ function Home() {
           )}
         </div>
         
-    
-        <input type="text" placeholder="Search..." className="search-bar" />
+        <input
+        type="text"
+        placeholder="Search"
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        onKeyUp={handleKeyPress}
+        className="search-bar"
+      />
         <div className="nav-buttons">
           <button className="nav-item" onClick={handleNavToNewListing}>
             <span role="img" aria-label="add">➕</span> New Listing
@@ -178,19 +211,48 @@ function Home() {
             </select>
         </div>
         <div className="new-listings-grid">
-          
-          {(typeof data.home === 'undefined') ? (
-            <p>Loading...</p>
-          ) : (data.home.map((unit, i) => (
-            <div key={i} className="listing-card" onClick={() => openModal(unit)}>
-              <img src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${unit[4]}.jpg`} alt={unit[0]} className="listing-image" />
-              <div className="listing-details">
-                <h3 className="listing-title">{unit[0]}</h3>
-                <p className="listing-price">${unit[2]}</p>
-              </div>
-            </div>
-          )))} 
 
+          {/* Display default items if no search is performed */}
+          {!isSearching && (
+            <div>
+              {typeof data.home === 'undefined' ? (
+                <p>Loading...</p>
+              ) : (
+                data.home.map((unit, i) => (
+                  <div key={i} className="listing-card" onClick={() => openModal(unit)}>
+                    <img
+                      src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${unit[4]}.jpg`}
+                      alt={unit[0]}
+                      className="listing-image"
+                    />
+                    <div className="listing-details">
+                      <h3 className="listing-title">{unit[0]}</h3>
+                      <p className="listing-price">${unit[2]}</p>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+          )}
+
+          {/* Display search results after a search is performed */}
+          {isSearching && (
+            <div>
+              {searchResults.map((item, index) => (
+                <div key={index} className="listing-card" onClick={() => openModal(item)}>
+                  <img
+                    src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${item[5]}.jpg`}
+                    alt={item[1]}
+                    className="listing-image"
+                  />
+                  <div className="listing-details">
+                    <h3 className="listing-title">{item[1]}</h3>
+                    <p className="listing-price">${item[3]}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
       

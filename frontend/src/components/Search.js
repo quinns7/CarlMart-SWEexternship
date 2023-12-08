@@ -34,15 +34,15 @@ const imageMap = {
   padImage: padImage,
 };
 
-function Home() {
+function Search() {
 
   const [showCategories, setShowCategories] = useState(false);
-  const categories = ['Books', 'Electronics', 'Apparel', 'Furniture', 'Toys'];
+  const categories = [{value: 'books', label: 'Books'}, {value: 'electronics', label: 'Electronics'}, {value: 'apparel', label: 'Apparel'}, {value: 'furniture', label:'Furniture'}, {value: 'toys', label: 'Toys'}];
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedListing, setSelectedListing] = useState(null);
   const navigate = useNavigate();
 
-  const [data, setData] = useState([{}])
+  const [data, setData] = useState([{}]);
 
   useEffect(() => {
     fetch("/search").then(
@@ -69,6 +69,10 @@ function Home() {
 
   const handleNavToNewListing = () => {
     navigate('/new-listing'); // Replace '/signup' with your actual sign-up route
+  };
+
+  const handleNavigateToAboutUs = () => {
+    navigate('/about-us'); // Replace '/signup' with your actual sign-up route
   };
 
   return (
@@ -135,4 +139,4 @@ function Home() {
   );
 }
 
-export default Home;
+export default Search;
