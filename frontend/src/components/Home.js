@@ -240,13 +240,13 @@ function Home() {
             searchResults.map((item, index) => (
               <div key={index} className="listing-card" onClick={() => openModal(item)}>
                 <img
-                  src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${item[5]}.jpg`}
+                  src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${item[4]}.jpg`}
                   alt={item[1]}
                   className="listing-image"
                 />
                 <div className="listing-details">
-                  <h3 className="listing-title">{item[1]}</h3>
-                  <p className="listing-price">${item[3]}</p>
+                  <h3 className="listing-title">{item[0]}</h3>
+                  <p className="listing-price">${item[2]}</p>
                 </div>
               </div>
             ))
