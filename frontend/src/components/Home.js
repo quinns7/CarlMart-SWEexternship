@@ -28,6 +28,7 @@ const ListingModal = ({ listing, onClose }) => {
             <h2>{listing[0]}</h2>
             <p>Price: ${listing[2]}</p>
             <p>Description: {listing[1]}</p>
+            <p>Condition: {listing[5]}</p>            
             <p>Contact: {listing[3]}</p>
           </div>
         </div>
@@ -44,7 +45,9 @@ function Home() {
   const [selectedListing, setSelectedListing] = useState(null);
   const navigate = useNavigate();
   const [sort, setSort] = useState('');
-  const [data, setData] = useState([{}])
+  // const [data, setData] = useState([{}])
+  const [data, setData] = useState({ home: [] }); // Initialize 'home' as an empty array
+
 
   useEffect(() => {
     fetch("/home").then(
@@ -219,48 +222,37 @@ function Home() {
         </div>
 
         <div className="new-listings-grid">
-          {/* Display default items if no search is performed */}
-          {!isSearching && (
-            <div>
-              {typeof data.home === 'undefined' ? (
-                <p>Loading...</p>
-              ) : (
-                data.home.map((unit, i) => (
-                  <div key={i} className="listing-card" onClick={() => openModal(unit)}>
-                    <img
-                      src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${unit[4]}.jpg`}
-                      alt={unit[0]}
-                      className="listing-image"
-                    />
-                    <div className="listing-details">
-                      <h3 className="listing-title">{unit[0]}</h3>
-                      <p className="listing-price">${unit[2]}</p>
-                    </div>
-                  </div>
-                ))
-              )}
-            </div>
-          )}
-
-          {/* Display search results after a search is performed */}
-          {isSearching && (
-            <div>
-              {searchResults.map((item, index) => (
-                <div key={index} className="listing-card" onClick={() => openModal(item)}>
-                  <img
-                    src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${item[5]}.jpg`}
-                    alt={item[1]}
-                    className="listing-image"
-                  />
-                  <div className="listing-details">
-                    <h3 className="listing-title">{item[1]}</h3>
-                    <p className="listing-price">${item[3]}</p>
-                  </div>
+          {!isSearching ? (
+            data.home.map((unit, i) => (
+              <div key={i} className="listing-card" onClick={() => openModal(unit)}>
+                <img
+                  src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${unit[4]}.jpg`}
+                  alt={unit[0]}
+                  className="listing-image"
+                />
+                <div className="listing-details">
+                  <h3 className="listing-title">{unit[0]}</h3>
+                  <p className="listing-price">${unit[2]}</p>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))
+          ) : (
+            searchResults.map((item, index) => (
+              <div key={index} className="listing-card" onClick={() => openModal(item)}>
+                <img
+                  src={`https://res.cloudinary.com/dpsysttyv/image/upload/w_200,h_100,c_fill,q_100/${item[4]}.jpg`}
+                  alt={item[1]}
+                  className="listing-image"
+                />
+                <div className="listing-details">
+                  <h3 className="listing-title">{item[0]}</h3>
+                  <p className="listing-price">${item[2]}</p>
+                </div>
+              </div>
+            ))
           )}
         </div>
+
       </section>
 
       
